@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">M-Expense</string>
+
+    <string-array name="currency">
+        <item>($) USD</item>
+        <item>(€) EUR</item>
+        <item>(£) Pound-GBP</item>
+        <item>(¥) Japan-JPY</item>
+        <item>($) Canada-CAD</item>
+        <item>($) Australia-AUD</item>
+        <item>(¥) China-RMB</item>
+        <item>($) Singapore-SGD</item>
+        <item>(HK$) Hong Kong-HKD</item>
+        <item>(đ) Vietnam-VND</item>
+    </string-array>
+
+    <string-array name="typeExpense">
+        <item>Food</item>
+        <item>Shopping</item>
+        <item>Transport</item>
+        <item>Hotel</item>
+    </string-array>
 </resources>
