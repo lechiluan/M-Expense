@@ -22,7 +22,7 @@
             android:name=".ExpenseActivity"
             android:exported="true"
             android:label="Trip Management"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".TripActivity"/>
         <activity
             android:name=".AddExpenseActivity"
             android:exported="true"
@@ -32,7 +32,7 @@
             android:name=".UpdateTripActivity"
             android:exported="true"
             android:label="Update Trip"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".TripActivity" />
 
         <activity
             android:name=".SplashActivity"
@@ -51,9 +51,9 @@
             android:name=".AddTripActivity"
             android:exported="true"
             android:label="Add New Trip"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".TripActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".TripActivity"
             android:exported="true"
             android:label="Trip Management" />
 

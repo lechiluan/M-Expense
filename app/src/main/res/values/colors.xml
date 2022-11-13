@@ -13,4 +13,5 @@
     <color name="item">#FFE500</color>
     <color name="text">#FFC30F</color>
     <color name="colorPrimary">#354E73</color>
+    <color name="colorPrimaryDark">#0067FF</color>
 </resources>

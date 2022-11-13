@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/roundstyle"
     android:padding="30dp"
-    tools:context=".AddTripActivity">
+    tools:context=".Trip.AddTripActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

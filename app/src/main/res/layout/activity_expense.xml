@@ -175,7 +175,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="-30dp"
             android:layout_toEndOf="@+id/totalExpense"
-            android:text="VND"
+            android:text="USD"
             android:textColor="#757575"
             android:textSize="17sp"
             android:textStyle="bold" />

@@ -2,7 +2,6 @@ package com.example.m_expense;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -32,9 +31,8 @@ public class SplashActivity extends AppCompatActivity {
         btnStart.setAnimation(bottomAnim);
         textView = findViewById(R.id.textView);
         textView.setAnimation(bottomAnim);
-
         btnStart.setOnClickListener(v -> {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            startActivity(new Intent(SplashActivity.this, TripActivity.class));
         });
     }
 }

@@ -120,7 +120,7 @@ public class UpdateTripActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getBaseContext(), "Update Successfully!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(UpdateTripActivity.this, MainActivity.class));
+                startActivity(new Intent(UpdateTripActivity.this, TripActivity.class));
                 overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
             }
         });

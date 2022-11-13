@@ -153,7 +153,7 @@ public class AddTripActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getBaseContext(), "Added Successfully!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(AddTripActivity.this, MainActivity.class));
+            startActivity(new Intent(AddTripActivity.this, TripActivity.class));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }

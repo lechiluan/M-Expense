@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="5dp"
-                android:text="VND"
+                android:text="USD"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"

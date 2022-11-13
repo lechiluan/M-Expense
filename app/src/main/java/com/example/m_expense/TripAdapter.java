@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> implements Filterable {
 
@@ -99,7 +98,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
                     Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Delete Successfully!", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, MainActivity.class));
+                    context.startActivity(new Intent(context, TripActivity.class));
                     activity.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                 }
 

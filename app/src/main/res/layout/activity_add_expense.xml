@@ -33,6 +33,8 @@
         android:background="@drawable/editext"
         android:hint="Type"
         android:textColorHint="@color/black"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
         app:layout_constraintBottom_toTopOf="@+id/layoutExpenseAmount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +58,8 @@
         android:background="@drawable/editext"
         android:hint="Amount"
         android:textColorHint="@color/black"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dropdownLayout"
@@ -65,7 +69,14 @@
             android:id="@+id/expenseAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:background="#00000000"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="#000000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -74,8 +85,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/editext"
-
         android:hint="Date"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
         android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,24 +100,30 @@
             android:layout_height="match_parent"
             android:background="#00000000"
             android:clickable="false"
+            android:contextClickable="false"
             android:cursorVisible="false"
+            android:defaultFocusHighlightEnabled="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             android:textColor="#000000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutExpenseNote"
+        android:background="@drawable/editext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/editext"
         android:hint="Note"
         android:textColorHint="@color/black"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutExpenseDate"
@@ -115,7 +133,14 @@
             android:id="@+id/expenseNote"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:background="#00000000"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="#000000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 

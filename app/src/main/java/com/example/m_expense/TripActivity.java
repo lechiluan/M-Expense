@@ -2,8 +2,6 @@ package com.example.m_expense;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class TripActivity extends AppCompatActivity {
 
     FloatingActionButton btnAdd;
 
@@ -71,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddTripActivity.class);
+                Intent intent = new Intent(TripActivity.this, AddTripActivity.class);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
@@ -91,14 +89,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        myDB = new MyDatabaseHelper(MainActivity.this);
+        myDB = new MyDatabaseHelper(TripActivity.this);
         trips = new ArrayList<>();
 
         displayOrNot();
 
-        tripAdapter = new TripAdapter(MainActivity.this, this, trips);
+        tripAdapter = new TripAdapter(TripActivity.this, this, trips);
         recyclerView.setAdapter(tripAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(TripActivity.this));
     }
 
     @Override
@@ -146,10 +144,10 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(MainActivity.this);
+                MyDatabaseHelper myDB = new MyDatabaseHelper(TripActivity.this);
                 myDB.deleteAll();
                 //Refresh Activity
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                Intent intent = new Intent(TripActivity.this, TripActivity.class);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
