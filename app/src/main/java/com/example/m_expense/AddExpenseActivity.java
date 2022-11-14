@@ -114,6 +114,9 @@ public class AddExpenseActivity extends AppCompatActivity {
         } else if (dateExpense.isEmpty()) {
             showError(date);
         } else {
+            typeExpense.setError(null);
+            amount.setError(null);
+            date.setError(null);
             addExpense();
         }
     }

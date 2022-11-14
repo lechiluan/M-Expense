@@ -73,7 +73,7 @@ public class ExpenseActivity extends AppCompatActivity {
 
     private void setStatusColor() {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Expense List");
+        getSupportActionBar().setTitle("Expense Management");
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
         Window window = this.getWindow();
         // clear FLAG_TRANSLUCENT_STATUS flag:

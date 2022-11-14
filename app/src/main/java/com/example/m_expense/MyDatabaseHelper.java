@@ -1,5 +1,6 @@
 package com.example.m_expense;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,7 +15,7 @@ import java.util.List;
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private final Context context;
-    private static final String DATABASE_NAME = "ManageExpense.db";
+    private static final String DATABASE_NAME = "ManageExpense1.db";
     private static final int DATABASE_VERSION = 1;
 
     private static final String TABLE_TRIP = "trip";
@@ -32,7 +33,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DATE_EXPENSE = "expenseDate";
     private static final String COLUMN_NOTE = "expenseNote";
     public static final String COLUMN_TRIP_ID = "tripId";
-    public static final String COLUMN_EXPESE_IMAGE = "expenseImage";
+    public static final String COLUMN_EXPENSE_IMAGE = "expenseImage";
+
+
+    // User Table
+    public static final String TABLE_USER = "Login";
+    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_PASSWORD = "password";
+
 
     public MyDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -53,8 +61,22 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         createTables(db);
         createTablesExpense(db);
+        createTablesUser(db);
+        insertDataUser(db);
     }
-
+    private void insertDataUser(SQLiteDatabase db) {
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_USERNAME, "admin");
+        cv.put(COLUMN_PASSWORD, "12345");
+        db.insert(TABLE_USER, null, cv);
+    }
+    // Create User Table
+    private void createTablesUser(SQLiteDatabase db) {
+        String query = "CREATE TABLE " + TABLE_USER +
+                " (" + COLUMN_USERNAME + " TEXT PRIMARY KEY, " +
+                COLUMN_PASSWORD + " TEXT not null);";
+        db.execSQL(query);
+    }
     private void createTables(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_TRIP +
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -74,7 +96,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_AMOUNT + " FLOAT, " +
                 COLUMN_DATE_EXPENSE + " DATE, " +
                 COLUMN_NOTE + " TEXT, " +
-                COLUMN_TRIP_ID + " INTEGER references " + TABLE_TRIP + "(" + COLUMN_ID + "));";
+                COLUMN_TRIP_ID + " INTEGER references " + TABLE_TRIP + "(" + COLUMN_ID + "), " +
+                COLUMN_EXPENSE_IMAGE + "TEXT);";
         db.execSQL(query);
     }
 
@@ -235,6 +258,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSE);
     }
-
+    public Boolean checkUserpass(String user, String pass) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_USERNAME + " = " +"'"+ user +"'"+ " AND " + COLUMN_PASSWORD + " = " +"'"+ pass+ "'", null);
+        return cursor.getCount() > 0;
+    }
 }
 

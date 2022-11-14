@@ -34,7 +34,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="355dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -184,7 +184,7 @@
             android:layout_toEndOf="@+id/imageView4"
             android:text="Start date:"
             android:textColor="#000000"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView
@@ -199,7 +199,7 @@
             android:layout_toEndOf="@+id/imageView3"
             android:text="Location:"
             android:textColor="#000000"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView
@@ -215,7 +215,7 @@
             android:layout_toEndOf="@+id/imageView6"
             android:text="Trip risk:"
             android:textColor="#000000"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView
@@ -233,7 +233,7 @@
             android:layout_toEndOf="@+id/imageView"
             android:text="Total expense:"
             android:textColor="#000000"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView
@@ -249,7 +249,7 @@
             android:layout_toEndOf="@+id/imageView5"
             android:text="End date:"
             android:textColor="#000000"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <ImageView
@@ -326,7 +326,7 @@
         android:layout_height="wrap_content"
         android:text="Expense List"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

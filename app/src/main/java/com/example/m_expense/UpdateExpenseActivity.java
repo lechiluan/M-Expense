@@ -96,7 +96,6 @@ public class UpdateExpenseActivity extends AppCompatActivity {
 
     private void setStatusColor() {
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
-
         Window window = this.getWindow();
         // clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -119,6 +118,9 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         } else if (date.isEmpty()) {
             showError(dateInput);
         } else {
+            typeExpense.setError(null);
+            amount.setError(null);
+            dateInput.setError(null);
             updateExpense();
         }
     }

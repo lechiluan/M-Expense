@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -53,31 +54,65 @@ public class UpdateTripActivity extends AppCompatActivity {
     }
 
     private void whenClickSave() {
-        btnSave.setOnClickListener(view -> {
-            MyDatabaseHelper myDB = new MyDatabaseHelper(this);
+        btnSave.setOnClickListener(view -> checkCredentials());
+    }
+    private void checkCredentials(){
+        String tripName = Objects.requireNonNull(name.getText()).toString().trim();
+        String location = Objects.requireNonNull(destination.getText()).toString().trim();
+        String dateS = dateStart.getText().toString().trim();
+        String dateE = dateEnd.getText().toString().trim();
 
-            radioGroup = findViewById(R.id.radioGroup);
-            selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
-            String risk = selectedRadioButton.getText().toString();
+        radioGroup = findViewById(R.id.radioGroup);
+        selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
 
-            selectedTrip.setName(Objects.requireNonNull(name.getText()).toString().trim());
-            selectedTrip.setDes(Objects.requireNonNull(destination.getText()).toString().trim());
-            selectedTrip.setDateFrom(dateStart.getText().toString().trim());
-            selectedTrip.setDateTo(dateEnd.getText().toString().trim());
-            selectedTrip.setRisk(risk);
-            selectedTrip.setDesc(Objects.requireNonNull(desc.getText()).toString().trim());
-
-            long result = myDB.update(selectedTrip);
-            if (result == -1) {
-                Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getBaseContext(), "Update Successfully!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(UpdateTripActivity.this, TripActivity.class));
-                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
-            }
-        });
+        if (tripName.isEmpty()) {
+            showError(name, "This is a required field");
+        } else if (location.isEmpty()) {
+            showError(destination, "This is a required field");
+        } else if (dateS.isEmpty()) {
+            showError(dateStart, "This is a required field");
+        } else if (new Date(dateS).after(new Date(dateE))) {
+            showError(dateEnd, "Date end must be after start date");
+        } else if (dateE.isEmpty()) {
+            showError(dateEnd, "This is a required field");
+        } else {
+            name.setError(null);
+            dateStart.setError(null);
+            dateEnd.setError(null);
+            destination.setError(null);
+            //method call for insert function
+            updateTrip();
+        }
     }
 
+    private void updateTrip() {
+        MyDatabaseHelper myDB = new MyDatabaseHelper(this);
+
+        radioGroup = findViewById(R.id.radioGroup);
+        selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
+        String risk = selectedRadioButton.getText().toString();
+
+        selectedTrip.setName(Objects.requireNonNull(name.getText()).toString().trim());
+        selectedTrip.setDes(Objects.requireNonNull(destination.getText()).toString().trim());
+        selectedTrip.setDateFrom(dateStart.getText().toString().trim());
+        selectedTrip.setDateTo(dateEnd.getText().toString().trim());
+        selectedTrip.setRisk(risk);
+        selectedTrip.setDesc(Objects.requireNonNull(desc.getText()).toString().trim());
+
+        long result = myDB.update(selectedTrip);
+        if (result == -1) {
+            Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getBaseContext(), "Update Successfully!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(UpdateTripActivity.this, TripActivity.class));
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        }
+    }
+
+    private void showError(EditText input, String s) {
+        input.setError(s);
+        input.requestFocus();
+    }
     private void DatePickerEnd() {
         calendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener datePickerTo = new DatePickerDialog.OnDateSetListener() {
@@ -133,7 +168,6 @@ public class UpdateTripActivity extends AppCompatActivity {
 
     private void setStatusColor() {
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
-
         Window window = this.getWindow();
         // clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -159,7 +193,6 @@ public class UpdateTripActivity extends AppCompatActivity {
         } else {
             no.setChecked(true);
         }
-
         Objects.requireNonNull(getSupportActionBar()).setTitle("Update \"" + selectedTrip.getName() + "\"");
     }
 }

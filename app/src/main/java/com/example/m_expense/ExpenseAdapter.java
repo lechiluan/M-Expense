@@ -27,7 +27,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
 
     private final Context context;
     private final Activity activity;
-    private List<Expense> expenses;
+    private final List<Expense> expenses;
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -95,11 +95,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
 
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // do nothing
-            }
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
+            // do nothing
         });
         builder.create().show();
     }

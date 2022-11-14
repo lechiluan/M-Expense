@@ -139,6 +139,10 @@ public class AddTripActivity extends AppCompatActivity {
         } else if (dateE.isEmpty()) {
             showError(dateEnd, "This is a required field");
         } else {
+            name.setError(null);
+            dateStart.setError(null);
+            dateEnd.setError(null);
+            destination.setError(null);
             //method call for insert function
             addTrip();
         }
