@@ -23,30 +23,11 @@ import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static String currentUser;
     EditText username, password;
     Button btnLogin;
     MyDatabaseHelper db;
 
-//    public static class SaveSharedPreference
-//    {
-//        static final String PREF_USER_NAME= "username";
-//
-//        static SharedPreferences getSharedPreferences(Context ctx) {
-//            return PreferenceManager.getDefaultSharedPreferences(ctx);
-//        }
-//
-//        public static void setUserName(Context ctx, String userName)
-//        {
-//            SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
-//            editor.putString(PREF_USER_NAME, userName);
-//            editor.apply();
-//        }
-//
-//        public static String getUserName(Context ctx)
-//        {
-//            return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
-//        }
-//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         // Set status bar color
         setStatusColor();
 
-        btnLogin.setOnClickListener(v -> checkError());
+        btnLogin.setOnClickListener(v -> checkInput());
     }
     private void setStatusColor() {
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
@@ -70,29 +51,22 @@ public class LoginActivity extends AppCompatActivity {
         // finally change the color
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
     }
-    private void checkError() {
+    private void checkInput() {
+        db = new MyDatabaseHelper(this);
         String Username = username.getText().toString().trim();
         String Password = password.getText().toString().trim();
-
         if (Username.isEmpty()) {
             showError(username);
         } else if (Password.isEmpty()) {
             showError(password);
-        } else {
-            checkInput();
         }
-    }
-
-    private void checkInput() {
-        db = new MyDatabaseHelper(this);
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
-        Boolean checkData = db.checkUserPass(user, pass);
+        Boolean checkData = db.checkUserPass(Username, Password);
         if (checkData) {
-            Toast.makeText(LoginActivity.this, "Log in successfully !", Toast.LENGTH_SHORT).show();
-//            SaveSharedPreference.setUserName(LoginActivity.this, user);
+            Toast.makeText(LoginActivity.this, "Log in is successfully !", Toast.LENGTH_SHORT).show();
+            currentUser = Username;
             Intent intent = new Intent(getApplicationContext(), TripActivity.class);
             startActivity(intent);
+            finish();
         } else {
             Toast.makeText(LoginActivity.this, "Username or Password is incorrect !", Toast.LENGTH_SHORT).show();
         }

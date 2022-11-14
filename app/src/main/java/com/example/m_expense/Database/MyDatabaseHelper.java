@@ -71,8 +71,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
     private void insertDataUser(SQLiteDatabase db) {
         ContentValues cv = new ContentValues();
+        // add many users
         cv.put(COLUMN_USERNAME, "admin");
         cv.put(COLUMN_PASSWORD, "admin");
+        db.insert(TABLE_USER, null, cv);
+        cv.put(COLUMN_USERNAME, "user");
+        cv.put(COLUMN_PASSWORD, "user");
+        db.insert(TABLE_USER, null, cv);
+        cv.put(COLUMN_USERNAME, "ll4825k@gre.ac.uk");
+        cv.put(COLUMN_PASSWORD, "123456");
         db.insert(TABLE_USER, null, cv);
     }
     // Create User Table
@@ -103,7 +110,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_NOTE + " TEXT, " +
                 COLUMN_LOCATION + " TEXT, " +
                 COLUMN_TRIP_ID + " INTEGER references " + TABLE_TRIP + "(" + COLUMN_ID + "), " +
-                COLUMN_EXPENSE_IMAGE + "TEXT);";
+                COLUMN_EXPENSE_IMAGE + "TEXT" +
+                COLUMN_USERNAME + " INTEGER references " + TABLE_USER + "(" + COLUMN_ID + "));";
         db.execSQL(query);
     }
 
@@ -309,9 +317,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                         jsonFormat.append("\t\t}");
                     }
                 } while (cursor.moveToNext());
+                jsonFormat.append("\n\t]\n}");
+                cursor.close();
             }
-            cursor.close();
-            jsonFormat.append("\n\t]\n}");
             list.add(jsonFormat.toString());
             db.close();
         }

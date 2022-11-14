@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -20,7 +21,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.m_expense.Authentication.LoginActivity;
 import com.example.m_expense.Database.MyDatabaseHelper;
+import com.example.m_expense.Expense.ExpenseActivity;
 import com.example.m_expense.R;
 
 import java.util.ArrayList;
@@ -94,6 +97,7 @@ public class TripActivity extends AppCompatActivity {
     }
 
     private void setStatusColor() {
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Hi, " + LoginActivity.currentUser);
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
         Window window = this.getWindow();
         // clear FLAG_TRANSLUCENT_STATUS flag:
@@ -130,12 +134,16 @@ public class TripActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.delete_all) {
             confirmDialog();
+        }
+        if(item.getItemId() == R.id.logout){
+            Intent intent = new Intent(TripActivity.this, LoginActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -149,6 +157,7 @@ public class TripActivity extends AppCompatActivity {
             MyDatabaseHelper myDB = new MyDatabaseHelper(TripActivity.this);
             myDB.deleteAllTrip();
             //Refresh Activity
+            Toast.makeText(TripActivity.this, "Deleted All Trip is Successfully !", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(TripActivity.this, TripActivity.class);
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

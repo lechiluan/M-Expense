@@ -117,13 +117,8 @@ public class ExpenseActivity extends AppCompatActivity {
         dateTo.setText(selectedTrip.getDateTo());
         tripRisk.setText(selectedTrip.getRisk());
 
-        Float totalExpenses = myDB.getTotalExpense(String.valueOf(selectedTrip.getId()));
-        if(totalExpenses == null){
-            totalExpenses = 0f;
-        }
-        else{
-            total.setText(String.valueOf(totalExpenses));
-        }
+        Float totalExpenses = myDB.getTotalExpense(String.valueOf(selectedTrip.getId())); // get total expense
+        total.setText(String.valueOf(totalExpenses));
     }
 
     @Override
@@ -157,7 +152,12 @@ public class ExpenseActivity extends AppCompatActivity {
             confirmDialog();
         }
         if(item.getItemId() == R.id.export_data){
-            exportData(selectedTrip.getId());
+            // check table expense is null
+            if (expenses.size() == 0) {
+                Toast.makeText(this, "No data to export !", Toast.LENGTH_SHORT).show();
+            } else {
+                exportData(selectedTrip.getId());
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -195,6 +195,7 @@ public class ExpenseActivity extends AppCompatActivity {
             MyDatabaseHelper myDB = new MyDatabaseHelper(ExpenseActivity.this);
             myDB.deleteAllExpense();
             // Refresh Activity
+            Toast.makeText(ExpenseActivity.this, "Deleted All Expenses is Successfully! ", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(ExpenseActivity.this, ExpenseActivity.class);
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

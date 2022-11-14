@@ -40,6 +40,7 @@ public class SplashActivity extends AppCompatActivity {
         btnStart.setAnimation(bottomAnim);
         btnStart.setOnClickListener(v -> {
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            finish();
         });
     }
 }
