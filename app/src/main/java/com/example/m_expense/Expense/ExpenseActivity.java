@@ -1,7 +1,6 @@
-package com.example.m_expense;
+package com.example.m_expense.Expense;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,6 +17,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.example.m_expense.Database.MyDatabaseHelper;
+import com.example.m_expense.R;
+import com.example.m_expense.Trip.Trip;
 
 import java.util.ArrayList;
 import java.util.List;

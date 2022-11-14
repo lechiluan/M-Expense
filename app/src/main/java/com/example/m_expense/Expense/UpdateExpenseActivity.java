@@ -1,4 +1,4 @@
-package com.example.m_expense;
+package com.example.m_expense.Expense;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.example.m_expense.Database.MyDatabaseHelper;
+import com.example.m_expense.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

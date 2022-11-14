@@ -22,22 +22,31 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
             android:padding="12dp">
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tripName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:maxLength="25"
-                android:text="Trip name"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/editTrip"
-                app:layout_constraintHorizontal_bias="0.009"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/plane_svg" />
+                <TextView
+                    android:id="@+id/tripName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:maxLength="25"
+                    android:text="Trip name"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/editTrip"
+                    app:layout_constraintHorizontal_bias="0.09"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/editTrip"
@@ -47,7 +56,7 @@
                 android:src="@drawable/edit_svg"
                 app:layout_constraintBottom_toBottomOf="@+id/tripName"
                 app:layout_constraintEnd_toStartOf="@+id/deleteTrip"
-                app:layout_constraintTop_toTopOf="@+id/tripName"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout"
                 app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
@@ -64,12 +73,12 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/tripName"
-                app:layout_constraintTop_toBottomOf="@+id/tripName">
+                app:layout_constraintStart_toStartOf="@+id/linearLayout"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
                 <ImageView
                     android:layout_width="25dp"
@@ -89,7 +98,7 @@
                 android:id="@+id/linearLayout3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="@+id/linearLayout2"

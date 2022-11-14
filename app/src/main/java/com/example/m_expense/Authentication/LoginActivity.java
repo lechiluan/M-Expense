@@ -1,4 +1,4 @@
-package com.example.m_expense;
+package com.example.m_expense.Authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -11,6 +11,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.m_expense.Database.MyDatabaseHelper;
+import com.example.m_expense.R;
+import com.example.m_expense.Trip.TripActivity;
 
 import java.util.Objects;
 
@@ -60,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         db = new MyDatabaseHelper(this);
         String user = username.getText().toString();
         String pass = password.getText().toString();
-        Boolean checkData = db.checkUserpass(user, pass);
+        Boolean checkData = db.checkUserPass(user, pass);
         if (checkData) {
             Toast.makeText(LoginActivity.this, "Log in successfully !", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), TripActivity.class);

@@ -1,4 +1,4 @@
-package com.example.m_expense;
+package com.example.m_expense.Expense;
 
 import java.io.Serializable;
 

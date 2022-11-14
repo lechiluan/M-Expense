@@ -1,4 +1,4 @@
-package com.example.m_expense;
+package com.example.m_expense.Database;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import com.example.m_expense.Expense.Expense;
+import com.example.m_expense.Trip.Trip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -247,20 +250,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_EXPENSE, "id=?", new String[]{row_id});
     }
 
-    void deleteAll() {
+    public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
         dropAndRecreate(db);
     }
 
 
 
-    void deleteAllExpense() {
+    public void deleteAllExpense() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSE);
     }
-    public Boolean checkUserpass(String user, String pass) {
+    public Boolean checkUserPass(String user, String pass) {
         SQLiteDatabase db = this.getReadableDatabase();
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_USERNAME + " = " +"'"+ user +"'"+ " AND " + COLUMN_PASSWORD + " = " +"'"+ pass+ "'", null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_USERNAME + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{user, pass});
         return cursor.getCount() > 0;
     }
 }

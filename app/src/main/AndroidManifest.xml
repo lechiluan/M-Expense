@@ -14,7 +14,7 @@
         android:theme="@style/Theme.MExpense"
         tools:targetApi="31">
         <activity
-            android:name=".LoginActivity"
+            android:name=".Authentication.LoginActivity"
             android:exported="false"
             android:label="Login">
             <meta-data
@@ -22,26 +22,26 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".UpdateExpenseActivity"
+            android:name=".Expense.UpdateExpenseActivity"
             android:exported="true"
             android:label="Update Expense"
-            android:parentActivityName=".ExpenseActivity" />
+            android:parentActivityName=".Expense.ExpenseActivity" />
         <activity
-            android:name=".ExpenseActivity"
+            android:name=".Expense.ExpenseActivity"
             android:exported="true"
             android:label="Trip Management"
-            android:parentActivityName=".TripActivity" />
+            android:parentActivityName=".Trip.TripActivity" />
         <activity
-            android:name=".AddExpenseActivity"
+            android:name=".Expense.AddExpenseActivity"
             android:exported="true"
             android:label="Add New Expense" />
         <activity
-            android:name=".UpdateTripActivity"
+            android:name=".Trip.UpdateTripActivity"
             android:exported="true"
             android:label="Update Trip"
-            android:parentActivityName=".TripActivity" />
+            android:parentActivityName=".Trip.TripActivity" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".Authentication.SplashActivity"
             android:exported="true"
             android:label="M-expense"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
@@ -53,12 +53,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddTripActivity"
+            android:name=".Trip.AddTripActivity"
             android:exported="true"
             android:label="Add New Trip"
-            android:parentActivityName=".TripActivity" />
+            android:parentActivityName=".Trip.TripActivity" />
         <activity
-            android:name=".TripActivity"
+            android:name=".Trip.TripActivity"
             android:exported="true"
             android:label="Trip Management" />
 

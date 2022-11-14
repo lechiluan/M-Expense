@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ExpenseActivity">
+    tools:context=".Expense.ExpenseActivity">
 
     <TextView
         android:id="@+id/textExpense"
@@ -65,24 +65,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textExpense">
 
+        <ImageView
+            android:id="@+id/imgTrip"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/plane_svg" />
+
 
         <TextView
             android:id="@+id/expenseType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/imgTrip"
             android:text="Trip name 1"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_below="@+id/expenseType"
-            android:layout_alignStart="@+id/expenseType"
+            android:layout_below="@+id/imgTrip"
+            android:layout_alignStart="@+id/imgTrip"
             android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
             app:srcCompat="@drawable/location_svgrepo_com" />
@@ -332,6 +338,4 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detail" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

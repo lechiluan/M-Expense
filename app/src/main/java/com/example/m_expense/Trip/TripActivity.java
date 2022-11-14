@@ -1,4 +1,4 @@
-package com.example.m_expense;
+package com.example.m_expense.Trip;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -20,7 +20,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.m_expense.Database.MyDatabaseHelper;
+import com.example.m_expense.R;
 
 import java.util.ArrayList;
 import java.util.List;
