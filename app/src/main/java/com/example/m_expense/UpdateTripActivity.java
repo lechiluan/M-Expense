@@ -25,6 +25,7 @@ import java.util.Objects;
 
 public class UpdateTripActivity extends AppCompatActivity {
 
+    // UI elements
     TextInputEditText name, destination, desc;
     EditText dateStart, dateEnd;
     Trip selectedTrip;
@@ -38,50 +39,47 @@ public class UpdateTripActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_trip);
 
-        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.black)));
+        // set status bar color
+        setStatusColor();
+        // find all elements
+        findAllElements();
 
-        Window window = this.getWindow();
+        getAndDisplayInfo(); // get selected trip info and display it
+        // set date picker
+        DatePickerStart();
+        DatePickerEnd();
 
-// clear FLAG_TRANSLUCENT_STATUS flag:
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        whenClickSave();
+    }
 
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+    private void whenClickSave() {
+        btnSave.setOnClickListener(view -> {
+            MyDatabaseHelper myDB = new MyDatabaseHelper(this);
 
-// finally change the color
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
+            radioGroup = findViewById(R.id.radioGroup);
+            selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
+            String risk = selectedRadioButton.getText().toString();
 
-        name = findViewById(R.id.tripName);
-        destination = findViewById(R.id.tripDestination);
-        desc = findViewById(R.id.description);
-        dateStart = findViewById(R.id.dateStart);
-        dateEnd = findViewById(R.id.dateEnd);
-        yes = findViewById(R.id.radioYes);
-        no = findViewById(R.id.radioNo);
-        btnSave = findViewById(R.id.tripBtnUpdate);
+            selectedTrip.setName(Objects.requireNonNull(name.getText()).toString().trim());
+            selectedTrip.setDes(Objects.requireNonNull(destination.getText()).toString().trim());
+            selectedTrip.setDateFrom(dateStart.getText().toString().trim());
+            selectedTrip.setDateTo(dateEnd.getText().toString().trim());
+            selectedTrip.setRisk(risk);
+            selectedTrip.setDesc(Objects.requireNonNull(desc.getText()).toString().trim());
 
-        getAndDisplayInfo();
+            long result = myDB.update(selectedTrip);
+            if (result == -1) {
+                Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getBaseContext(), "Update Successfully!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(UpdateTripActivity.this, TripActivity.class));
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+            }
+        });
+    }
 
+    private void DatePickerEnd() {
         calendar = Calendar.getInstance();
-
-
-        DatePickerDialog.OnDateSetListener datePickerFrom = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                updateCalendar();
-            }
-
-            private void updateCalendar() {
-                String format = "dd MMM yyyy";
-                SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
-                dateStart.setText(sdf.format(calendar.getTime()));
-            }
-        };
-
         DatePickerDialog.OnDateSetListener datePickerTo = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
@@ -98,33 +96,51 @@ public class UpdateTripActivity extends AppCompatActivity {
                 dateEnd.setText(sdf.format(calendar.getTime()));
             }
         };
-        dateStart.setOnClickListener(view -> new DatePickerDialog(UpdateTripActivity.this, datePickerFrom, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show());
         dateEnd.setOnClickListener(view -> new DatePickerDialog(UpdateTripActivity.this, datePickerTo, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show());
+    }
 
-        btnSave.setOnClickListener(view -> {
-            MyDatabaseHelper myDB = new MyDatabaseHelper(this);
+    private void DatePickerStart() {
+        calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener datePickerFrom = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            radioGroup = findViewById(R.id.radioGroup);
-            selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
-            String risk = selectedRadioButton.getText().toString();
-
-            selectedTrip.setName(name.getText().toString().trim());
-            selectedTrip.setDes(destination.getText().toString().trim());
-            selectedTrip.setDateFrom(dateStart.getText().toString().trim());
-            selectedTrip.setDateTo(dateEnd.getText().toString().trim());
-            selectedTrip.setRisk(risk);
-            selectedTrip.setDesc(desc.getText().toString().trim());
-
-            long result = myDB.update(selectedTrip);
-            if (result == -1) {
-                Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getBaseContext(), "Update Successfully!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(UpdateTripActivity.this, TripActivity.class));
-                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                updateCalendar();
             }
-        });
 
+            private void updateCalendar() {
+                String format = "dd MMM yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+                dateStart.setText(sdf.format(calendar.getTime()));
+            }
+        };
+        dateStart.setOnClickListener(view -> new DatePickerDialog(UpdateTripActivity.this, datePickerFrom, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show());
+    }
+
+    private void findAllElements() {
+        name = findViewById(R.id.tripName);
+        destination = findViewById(R.id.tripDestination);
+        desc = findViewById(R.id.description);
+        dateStart = findViewById(R.id.dateStart);
+        dateEnd = findViewById(R.id.dateEnd);
+        yes = findViewById(R.id.radioYes);
+        no = findViewById(R.id.radioNo);
+        btnSave = findViewById(R.id.tripBtnUpdate);
+    }
+
+    private void setStatusColor() {
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+
+        Window window = this.getWindow();
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
     }
 
     private void getAndDisplayInfo() {
@@ -144,6 +160,6 @@ public class UpdateTripActivity extends AppCompatActivity {
             no.setChecked(true);
         }
 
-        getSupportActionBar().setTitle("Update \"" + selectedTrip.getName() + "\"");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Update \"" + selectedTrip.getName() + "\"");
     }
 }

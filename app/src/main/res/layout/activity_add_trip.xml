@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Trip.AddTripActivity"
+    tools:context=".AddTripActivity"
     android:background="@color/white"
     android:padding="30dp">
 
@@ -22,14 +22,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Add New Trip"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="40dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/layoutTripName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutTripName"
@@ -41,6 +40,7 @@
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             android:textColorHint="@color/black"
+            app:hintTextColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toTopOf="@+id/layoutTripDestination"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,12 @@
                 android:id="@+id/tripName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:background="#00000000"
+                android:paddingStart="20dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="#000000"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -62,6 +67,7 @@
             android:background="@drawable/editext"
             android:hint="Trip Destination"
             android:textColorHint="@color/black"
+            app:hintTextColor="@color/colorPrimaryDark"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +79,12 @@
                 android:id="@+id/tripDestination"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:background="#00000000"
+                android:paddingStart="20dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="#000000"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -84,6 +95,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/editext"
             android:hint="Date Start"
+            app:hintTextColor="@color/colorPrimaryDark"
             android:textColorHint="@color/black"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
@@ -96,16 +108,17 @@
                 android:id="@+id/dateStart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@null"
+                android:background="#00000000"
                 android:clickable="false"
+                android:contextClickable="false"
                 android:cursorVisible="false"
+                android:defaultFocusHighlightEnabled="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:paddingStart="20dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="10dp"
                 android:textColor="#000000"
-                app:boxBackgroundMode="none"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
@@ -120,6 +133,7 @@
             android:background="@drawable/editext"
             android:hint="Date End"
             android:textColorHint="@color/black"
+            app:hintTextColor="@color/colorPrimaryDark"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -131,16 +145,19 @@
                 android:id="@+id/dateEnd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@null"
-                app:boxStrokeWidthFocused="0dp"
+                android:background="#00000000"
                 android:clickable="false"
+                android:contextClickable="false"
                 android:cursorVisible="false"
+                android:defaultFocusHighlightEnabled="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:paddingStart="20dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="10dp"
                 android:textColor="#000000"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
                 tools:ignore="SpeakableTextPresentCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,6 +169,7 @@
             android:background="@drawable/editext"
             android:hint="Description (Optional)"
             android:textColorHint="@color/black"
+            app:hintTextColor="@color/colorPrimaryDark"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -163,7 +181,12 @@
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:background="#00000000"
+                android:paddingStart="20dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="#000000"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -218,15 +241,13 @@
             android:id="@+id/tripBtnAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/roundstyle"
-            android:backgroundTint="#354E73"
             android:text="Add"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.526"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 

@@ -26,10 +26,10 @@ import java.util.Objects;
 
 public class AddTripActivity extends AppCompatActivity {
 
+    // UI elements
     TextInputEditText name, destination, desc;
     EditText dateStart, dateEnd;
-
-    Button btnSave;
+    Button btnAdd;
     Calendar calendar;
     RadioGroup radioGroup;
     RadioButton selectedRadioButton;
@@ -39,29 +39,23 @@ public class AddTripActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
+        // set status bar color
+        setStatusColor();
+        // find all elements
+        findAllElements();
+        // set date picker
+        datePickerStart();
+        datePickerEnd();
+        whenClickAdd();
+    }
 
-        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.black)));
+    private void whenClickAdd() {
+        //setOnClickListener to show date picker
+        btnAdd.setOnClickListener(v -> checkCredentials());
+    }
 
-        Window window = this.getWindow();
-
-// clear FLAG_TRANSLUCENT_STATUS flag:
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-
-// finally change the color
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
-
-        name = findViewById(R.id.tripName);
-        destination = findViewById(R.id.tripDestination);
-        desc = findViewById(R.id.description);
-        dateStart = findViewById(R.id.dateStart);
-        dateEnd = findViewById(R.id.dateEnd);
-
-
+    private void datePickerStart() {
         calendar = Calendar.getInstance();
-
         //Date Picker for EditText Date From
         DatePickerDialog.OnDateSetListener datePickerStart = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -72,14 +66,17 @@ public class AddTripActivity extends AppCompatActivity {
 
                 updateCalendar();
             }
-
             private void updateCalendar() {
                 String format = "dd MMM yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
                 dateStart.setText(sdf.format(calendar.getTime()));
             }
         };
+        dateStart.setOnClickListener(view -> new DatePickerDialog(AddTripActivity.this, datePickerStart, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show());
+    }
 
+    private void datePickerEnd() {
+        calendar = Calendar.getInstance();
         //Date Picker for EditText Date To
         DatePickerDialog.OnDateSetListener datePickerEnd = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -97,21 +94,35 @@ public class AddTripActivity extends AppCompatActivity {
                 dateEnd.setText(sdf.format(calendar.getTime()));
             }
         };
-
-        //setOnClickListener to show date picker
-        dateStart.setOnClickListener(view -> new DatePickerDialog(AddTripActivity.this, datePickerStart, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show());
         dateEnd.setOnClickListener(view -> new DatePickerDialog(AddTripActivity.this, datePickerEnd, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show());
+    }
 
 
-        btnSave = findViewById(R.id.tripBtnAdd);
-        btnSave.setOnClickListener(v -> checkCredentials());
+    private void setStatusColor() {
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+        Window window = this.getWindow();
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
+    }
+
+    private void findAllElements() {
+        name = findViewById(R.id.tripName);
+        destination = findViewById(R.id.tripDestination);
+        desc = findViewById(R.id.description);
+        dateStart = findViewById(R.id.dateStart);
+        dateEnd = findViewById(R.id.dateEnd);
+        btnAdd = findViewById(R.id.tripBtnAdd);
     }
 
     private void checkCredentials() {
-        String tripName = name.getText().toString().trim();
-        String location = destination.getText().toString().trim();
-        String dateF = dateStart.getText().toString().trim();
-        String dateT = dateEnd.getText().toString().trim();
+        String tripName = Objects.requireNonNull(name.getText()).toString().trim();
+        String location = Objects.requireNonNull(destination.getText()).toString().trim();
+        String dateS = dateStart.getText().toString().trim();
+        String dateE = dateEnd.getText().toString().trim();
 
         radioGroup = findViewById(R.id.radioGroup);
         selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
@@ -121,11 +132,11 @@ public class AddTripActivity extends AppCompatActivity {
             showError(name, "This is a required field");
         } else if (location.isEmpty()) {
             showError(destination, "This is a required field");
-        } else if (dateF.isEmpty()) {
+        } else if (dateS.isEmpty()) {
             showError(dateStart, "This is a required field");
-        } else if (new Date(dateF).after(new Date(dateT))) {
-            showError(dateEnd, "Invalid date");
-        } else if (dateT.isEmpty()) {
+        } else if (new Date(dateS).after(new Date(dateE))) {
+            showError(dateEnd, "Date end must be after start date");
+        } else if (dateE.isEmpty()) {
             showError(dateEnd, "This is a required field");
         } else {
             //method call for insert function
@@ -140,9 +151,9 @@ public class AddTripActivity extends AppCompatActivity {
         risk = selectedRadioButton.getText().toString();
 
         Trip trip = new Trip();
-        trip.setName(name.getText().toString().trim());
-        trip.setDes(destination.getText().toString().trim());
-        trip.setDesc(desc.getText().toString().trim());
+        trip.setName(Objects.requireNonNull(name.getText()).toString().trim());
+        trip.setDes(Objects.requireNonNull(destination.getText()).toString().trim());
+        trip.setDesc(Objects.requireNonNull(desc.getText()).toString().trim());
         trip.setDateFrom(dateStart.getText().toString().trim());
         trip.setDateTo(dateEnd.getText().toString().trim());
         trip.setRisk(risk);

@@ -109,17 +109,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
         return expenses.size();
     }
 
-
-
     class MyViewHolder extends RecyclerView.ViewHolder {
-
         ImageView editExpense, deleteExpense;
         TextView expenseType, expenseAmount, expenseDate, expenseNote;
         LinearLayout expenseLayout;
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             expenseType = itemView.findViewById(R.id.expenseType);
             expenseAmount = itemView.findViewById(R.id.expenseAmount);
             expenseDate = itemView.findViewById(R.id.expenseDate);
@@ -132,8 +128,5 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
             Animation translate_anim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             expenseLayout.setAnimation(translate_anim);
         }
-
     }
-
-
 }

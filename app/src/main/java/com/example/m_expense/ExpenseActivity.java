@@ -18,54 +18,73 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ExpenseActivity extends AppCompatActivity {
-
+    // UI elements
     TextView tripName, destination, dateFrom, dateTo, tripRisk, total;
     Trip selectedTrip;
-    FloatingActionButton btnAdd;
-    ImageView empty_imageview;
-
-
+    ImageView empty_imageview, btnAdd;
     List<Expense> expenses;
     ExpenseAdapter expenseAdapter;
     RecyclerView recyclerView;
     TextView no_data;
 
-
-    MyDatabaseHelper myDB;
+    MyDatabaseHelper myDB; // database helper class
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Expense List");
-
-        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.black)));
-
-        Window window = this.getWindow();
-
-// clear FLAG_TRANSLUCENT_STATUS flag:
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-
-// finally change the color
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
+        // set status bar color
+        setStatusColor();
 
         Intent intent = getIntent();
         selectedTrip = (Trip) intent.getSerializableExtra("selectedTrip");
+        myDB = new MyDatabaseHelper(this);
+        expenses = new ArrayList<>();
 
+        findAllElements();
 
+        displayOrNot();
+        // recycler view for expense list
+        recyclerViewTrip();
+        whenClickAdd();
+        getDetails();
+    }
+
+    private void recyclerViewTrip() {
+        expenseAdapter = new ExpenseAdapter(ExpenseActivity.this, this, expenses);
+        recyclerView.setAdapter(expenseAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseActivity.this));
+    }
+
+    private void whenClickAdd() {
+        btnAdd.setOnClickListener(view -> {
+            Intent intents = new Intent(ExpenseActivity.this, AddExpenseActivity.class);
+            intents.putExtra("selectedTrip", selectedTrip);
+            startActivity(intents);
+        });
+    }
+
+    private void setStatusColor() {
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Expense List");
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+        Window window = this.getWindow();
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
+    }
+
+    private void findAllElements() {
         recyclerView = findViewById(R.id.recyclerView_expense);
         empty_imageview = findViewById(R.id.empty_imageview);
         no_data = findViewById(R.id.no_data);
@@ -75,27 +94,7 @@ public class ExpenseActivity extends AppCompatActivity {
         dateTo = findViewById(R.id.dateTo);
         tripRisk = findViewById(R.id.tripRisk);
         total = findViewById(R.id.totalExpense);
-
-
-        myDB = new MyDatabaseHelper(this);
-        expenses = new ArrayList<>();
-
-        displayOrNot();
-
-        expenseAdapter = new ExpenseAdapter(ExpenseActivity.this, this, expenses);
-        recyclerView.setAdapter(expenseAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseActivity.this));
-
-
-        btnAdd = findViewById(R.id.addExpense_button);
-        btnAdd.setOnClickListener(view -> {
-            Intent intents = new Intent(ExpenseActivity.this, AddExpenseActivity.class);
-            intents.putExtra("selectedTrip", selectedTrip);
-            startActivity(intents);
-        });
-
-        getDetails();
-
+        btnAdd = findViewById(R.id.add_button_expense);
     }
 
     @SuppressLint("SetTextI18n")
@@ -136,24 +135,18 @@ public class ExpenseActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
         builder.setMessage("Are you sure you want to delete all Data?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(ExpenseActivity.this);
-                myDB.deleteAllExpense();
-                //Refresh Activity
-                Intent intent = new Intent(ExpenseActivity.this, ExpenseActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            MyDatabaseHelper myDB = new MyDatabaseHelper(ExpenseActivity.this);
+            myDB.deleteAllExpense();
+            //Refresh Activity
+            Intent intent = new Intent(ExpenseActivity.this, ExpenseActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-                finish();
-            }
+            finish();
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
 
-            }
         });
         builder.create().show();
     }

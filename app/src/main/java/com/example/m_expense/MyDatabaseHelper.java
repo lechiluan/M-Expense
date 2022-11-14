@@ -26,14 +26,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_RISK = "risk";
     private static final String COLUMN_DESC = "tripDesc";
 
-
     private static final String TABLE_EXPENSE = "Expense";
     private static final String COLUMN_TYPE = "expenseType";
     private static final String COLUMN_AMOUNT = "expenseAmount";
     private static final String COLUMN_DATE_EXPENSE = "expenseDate";
     private static final String COLUMN_NOTE = "expenseNote";
     public static final String COLUMN_TRIP_ID = "tripId";
-
+    public static final String COLUMN_EXPESE_IMAGE = "expenseImage";
 
     public MyDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -55,9 +54,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         createTables(db);
         createTablesExpense(db);
     }
-
-
-
 
     private void createTables(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_TRIP +
@@ -81,8 +77,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_TRIP_ID + " INTEGER references " + TABLE_TRIP + "(" + COLUMN_ID + "));";
         db.execSQL(query);
     }
-
-
 
     public long add(Trip trip) {
         long insertId;

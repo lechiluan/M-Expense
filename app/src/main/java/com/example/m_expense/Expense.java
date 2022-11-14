@@ -14,7 +14,6 @@ public class Expense implements Serializable {
 
     }
 
-
     public int getId() {
         return idExpense;
     }
@@ -79,16 +78,4 @@ public class Expense implements Serializable {
         this.Amount = amount;
         this.tripID = tripID;
     }
-
-//    @Override
-//    public String toString() {
-//        return "Expense{" +
-//                "id=" + idExpense +
-//                ", type='" + TypeExpense + '\'' +
-//                ", des='" + DestinationExpense + '\'' +
-//                ", dateFrom='" + Date + '\'' +
-//                ", risk='" + Amount + '\'' +
-//                ", tripID='" + tripID + '\'' +
-//                '}';
-//    }
 }

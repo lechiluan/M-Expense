@@ -20,17 +20,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/material_dynamic_primary80"
+            android:background="@color/colorPrimaryDark"
             android:padding="12dp">
 
             <TextView
                 android:id="@+id/tripName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="8dp"
                 android:maxLength="25"
                 android:text="Trip name"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/editTrip"
@@ -38,12 +38,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
             <ImageView
                 android:id="@+id/editTrip"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_edit"
+                android:src="@drawable/edit_svg"
                 app:layout_constraintBottom_toBottomOf="@+id/tripName"
                 app:layout_constraintEnd_toStartOf="@+id/deleteTrip"
                 app:layout_constraintTop_toTopOf="@+id/tripName"
@@ -51,9 +52,9 @@
 
             <ImageView
                 android:id="@+id/deleteTrip"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_delete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/delete_svg"
                 app:layout_constraintBottom_toBottomOf="@+id/editTrip"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/editTrip" />
@@ -71,16 +72,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/tripName">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_location" />
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/location_svgrepo_com"
+                    android:layout_marginEnd="15dp"/>
 
                 <TextView
                     android:id="@+id/destination"
                     android:layout_width="122dp"
                     android:layout_height="wrap_content"
                     android:text="Trip destination"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
@@ -90,35 +92,65 @@
                 android:layout_marginTop="3dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/linearLayout2"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_calendar" />
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/calendar_svg" />
 
                 <TextView
                     android:id="@+id/date"
                     android:layout_width="178dp"
                     android:layout_height="wrap_content"
                     android:text="Oct 16, 2022 - Oct 16, 2022"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
             <TextView
+                android:id="@+id/totalExpense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 VND"
-                android:textColor="@color/black"
+                android:layout_marginStart="12dp"
+                android:text="0"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintEnd_toStartOf="@+id/USD"
+                app:layout_constraintHorizontal_bias="0.222"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/imageView2"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/USD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="128dp"
+                android:text="USD"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/totalExpense"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/linearLayout3"
-                app:layout_constraintVertical_bias="0.2" />
+                app:layout_constraintTop_toTopOf="@+id/totalExpense"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:src="@drawable/money_svg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

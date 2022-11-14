@@ -1,6 +1,5 @@
 package com.example.m_expense;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -29,52 +28,38 @@ import java.util.Objects;
 
 public class TripActivity extends AppCompatActivity {
 
-    FloatingActionButton btnAdd;
-
+    // UI elements
     RecyclerView recyclerView;
-    ImageView empty_imageview;
+    ImageView empty_imageview, btnAdd;
     TextView no_data;
-
     MyDatabaseHelper myDB;
     List<Trip> trips;
     TripAdapter tripAdapter;
-
     SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
+        myDB = new MyDatabaseHelper(TripActivity.this);
+        trips = new ArrayList<>();
+        // set status bar color
+        setStatusColor();
+        findAllElements();
+        whenClickAdd();
+        searchTrip();
+        displayOrNot();
+        // recycler view for trip list
+        recyclerViewTrip();
+    }
 
-        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.black)));
+    private void recyclerViewTrip() {
+        tripAdapter = new TripAdapter(TripActivity.this, this, trips);
+        recyclerView.setAdapter(tripAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(TripActivity.this));
+    }
 
-        Window window = this.getWindow();
-
-// clear FLAG_TRANSLUCENT_STATUS flag:
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-
-// finally change the color
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
-
-        recyclerView = findViewById(R.id.recyclerView_trip);
-        empty_imageview = findViewById(R.id.empty_imageview);
-        no_data = findViewById(R.id.no_data);
-        btnAdd = findViewById(R.id.add_button);
-        searchView = findViewById(R.id.searchTrip);
-
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(TripActivity.this, AddTripActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }
-        });
-
+    private void searchTrip() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -88,15 +73,34 @@ public class TripActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
-        myDB = new MyDatabaseHelper(TripActivity.this);
-        trips = new ArrayList<>();
+    private void whenClickAdd() {
+        btnAdd.setOnClickListener(view -> {
+            Intent intent = new Intent(TripActivity.this, AddTripActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+    }
 
-        displayOrNot();
+    private void findAllElements() {
+        recyclerView = findViewById(R.id.recyclerView_trip);
+        empty_imageview = findViewById(R.id.empty_imageview);
+        no_data = findViewById(R.id.no_data);
+        btnAdd = findViewById(R.id.add_button);
+        searchView = findViewById(R.id.searchTrip);
 
-        tripAdapter = new TripAdapter(TripActivity.this, this, trips);
-        recyclerView.setAdapter(tripAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(TripActivity.this));
+    }
+
+    private void setStatusColor() {
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+        Window window = this.getWindow();
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
     }
 
     @Override
@@ -117,7 +121,6 @@ public class TripActivity extends AppCompatActivity {
             no_data.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -141,24 +144,18 @@ public class TripActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
         builder.setMessage("Are you sure you want to delete all Data?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(TripActivity.this);
-                myDB.deleteAll();
-                //Refresh Activity
-                Intent intent = new Intent(TripActivity.this, TripActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            MyDatabaseHelper myDB = new MyDatabaseHelper(TripActivity.this);
+            myDB.deleteAll();
+            //Refresh Activity
+            Intent intent = new Intent(TripActivity.this, TripActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-                finish();
-            }
+            finish();
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
 
-            }
         });
         builder.create().show();
     }

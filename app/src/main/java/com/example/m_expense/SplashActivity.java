@@ -1,5 +1,6 @@
 package com.example.m_expense;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.Animation;
@@ -10,12 +11,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
     Animation topAnim, bottomAnim;
     ImageView imageLogo;
     Button btnStart;
-    TextView textView;
-
+    TextView textView, slogan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +28,14 @@ public class SplashActivity extends AppCompatActivity {
 //       Hooks
         imageLogo = findViewById(R.id.imageLogo);
         btnStart = findViewById(R.id.btnStart);
-        imageLogo.setAnimation(topAnim);
-        btnStart.setAnimation(bottomAnim);
         textView = findViewById(R.id.textView);
-        textView.setAnimation(bottomAnim);
+        slogan = findViewById(R.id.slogan);
+
+        imageLogo.setAnimation(topAnim);
+        slogan.setAnimation(topAnim);
+        textView.setAnimation(topAnim);
+        btnStart.setAnimation(bottomAnim);
+
         btnStart.setOnClickListener(v -> {
             startActivity(new Intent(SplashActivity.this, TripActivity.class));
         });

@@ -7,29 +7,12 @@
     android:background="@color/white"
     tools:context=".ExpenseActivity">
 
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addExpense_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="40dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-
     <TextView
         android:id="@+id/textExpense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Expenses"
-        android:textColor="@color/black"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="50sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/detail"
@@ -37,18 +20,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/add_button_expense"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/add_plus_svgrepo_com" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="350dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_expense"
@@ -65,7 +57,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/editext"
+        android:background="@drawable/display_expense"
         android:padding="25dp"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,19 +73,19 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:text="Trip name 1"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_below="@+id/expenseType"
             android:layout_alignStart="@+id/expenseType"
             android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
-            app:srcCompat="@drawable/ic_location" />
+            app:srcCompat="@drawable/location_svgrepo_com" />
 
         <TextView
             android:id="@+id/destination"
@@ -105,7 +97,7 @@
             android:layout_marginTop="-1dp"
             android:layout_toEndOf="@+id/textView18"
             android:text="Location"
-            android:textColor="#757575"
+            android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -119,7 +111,7 @@
             android:layout_marginTop="-1dp"
             android:layout_toEndOf="@+id/textView10"
             android:text="18 Oct 2022"
-            android:textColor="#757575"
+            android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -133,7 +125,7 @@
             android:layout_marginTop="-1dp"
             android:layout_toEndOf="@+id/textView11"
             android:text="18 Oct 2022"
-            android:textColor="#757575"
+            android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -147,7 +139,7 @@
             android:layout_marginTop="-1dp"
             android:layout_toEndOf="@+id/textView14"
             android:text="Yes / No"
-            android:textColor="#757575"
+            android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -162,7 +154,7 @@
             android:layout_marginBottom="-30dp"
             android:layout_toEndOf="@+id/textView"
             android:text="0.0"
-            android:textColor="#757575"
+            android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -176,7 +168,7 @@
             android:layout_marginBottom="-30dp"
             android:layout_toEndOf="@+id/totalExpense"
             android:text="USD"
-            android:textColor="#757575"
+            android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -191,8 +183,9 @@
             android:layout_marginBottom="0dp"
             android:layout_toEndOf="@+id/imageView4"
             android:text="Start date:"
-            android:textColor="#757575"
-            android:textSize="15sp" />
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView18"
@@ -205,8 +198,9 @@
             android:layout_marginTop="1dp"
             android:layout_toEndOf="@+id/imageView3"
             android:text="Location:"
-            android:textColor="#757575"
-            android:textSize="15sp" />
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView14"
@@ -220,8 +214,9 @@
 
             android:layout_toEndOf="@+id/imageView6"
             android:text="Trip risk:"
-            android:textColor="#757575"
-            android:textSize="15sp" />
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView"
@@ -237,8 +232,9 @@
             android:layout_marginBottom="-35dp"
             android:layout_toEndOf="@+id/imageView"
             android:text="Total expense:"
-            android:textColor="#757575"
-            android:textSize="15sp" />
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView11"
@@ -252,48 +248,49 @@
             android:layout_marginBottom="1dp"
             android:layout_toEndOf="@+id/imageView5"
             android:text="End date:"
-            android:textColor="#757575"
-            android:textSize="15sp" />
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_below="@+id/imageView3"
             android:layout_alignStart="@+id/imageView3"
             android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
-            app:srcCompat="@drawable/ic_calendar" />
+            app:srcCompat="@drawable/calendar_svg" />
 
         <ImageView
             android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_below="@+id/imageView4"
             android:layout_alignStart="@+id/imageView4"
             android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
-            app:srcCompat="@drawable/ic_calendar" />
+            app:srcCompat="@drawable/calendar_svg" />
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_below="@+id/imageView5"
             android:layout_alignStart="@+id/imageView5"
             android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
-            app:srcCompat="@drawable/ic_risk" />
+            app:srcCompat="@drawable/danger_svg" />
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_below="@+id/imageView6"
             android:layout_alignStart="@+id/imageView6"
             android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
-            app:srcCompat="@drawable/ic__money" />
+            app:srcCompat="@drawable/money_svg" />
 
 
     </RelativeLayout>
@@ -308,7 +305,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_empty" />
+        app:srcCompat="@drawable/box_empty_svgrepo_com" />
 
     <TextView
         android:id="@+id/no_data"
@@ -316,12 +313,25 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:alpha="0.4"
-        android:text="Library Available."
+        android:text="Empty Expenses!!!"
         android:textSize="20sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/empty_imageview" />
+
+    <TextView
+        android:id="@+id/expenseList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Expense List"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -66,7 +66,6 @@ public class Trip implements Serializable {
         this.desc = desc;
     }
 
-
     public Trip(int id, String name, String des, String dateFrom, String dateTo, String risk, String desc) {
         this.id = id;
         this.name = name;
@@ -87,21 +86,6 @@ public class Trip implements Serializable {
     }
 
     public Trip() {
-
-    }
-
-
-    @Override
-    public String toString() {
-        return "Trip{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", des='" + destination + '\'' +
-                ", dateFrom='" + dateFrom + '\'' +
-                ", dateTo='" + dateTo + '\'' +
-                ", risk='" + risk + '\'' +
-                ", desc=" + desc +
-                '}';
     }
 }
 

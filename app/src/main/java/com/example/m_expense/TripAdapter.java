@@ -62,10 +62,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
         String dateFrom = trip.getDateFrom();
         String dateTo = trip.getDateTo();
 
+        MyDatabaseHelper myDB = new MyDatabaseHelper(context);
+
+        Float totalExpenses = myDB.getTotalExpense(String.valueOf(trip.getId()));
+
         // set value to form
         holder.tripName.setText(name);
         holder.tripDestination.setText(des);
         holder.tripDate.setText(dateFrom.concat(" - " + dateTo));
+        holder.totalExpense.setText(String.valueOf(totalExpenses));
 
         holder.editTrip.setOnClickListener(view -> {
             //passing parameter values
@@ -82,7 +87,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
             intent.putExtra("selectedTrip", trip);
             activity.startActivityForResult(intent, 1);
         });
-
     }
 
     private void deleteTrip(int id, String name) {
@@ -118,13 +122,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
         return trips.size();
     }
 
-
-
-
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView editTrip, deleteTrip;
-        TextView tripName, tripDestination, tripDate;
+        TextView tripName, tripDestination, tripDate,totalExpense;
         LinearLayout mainLayout;
 
         MyViewHolder(@NonNull View itemView) {
@@ -136,7 +137,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
             editTrip = itemView.findViewById(R.id.editTrip);
             deleteTrip = itemView.findViewById(R.id.deleteTrip);
             mainLayout = itemView.findViewById(R.id.mainLayout);
-
+            totalExpense = itemView.findViewById(R.id.totalExpense);
             //Animate Recyclerview
             Animation translate_anim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translate_anim);

@@ -24,14 +24,13 @@ import java.util.Objects;
 
 public class UpdateExpenseActivity extends AppCompatActivity {
 
+    // UI elements
     AutoCompleteTextView typeExpense;
     EditText dateInput, amount, note;
     Button btnSave;
-
     String[] typeExpenseList;
     ArrayAdapter<String> adapter;
     Calendar calendar;
-
     Expense selectedExpense;
 
     @Override
@@ -39,34 +38,34 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_expense);
 
-        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.black)));
-
-        Window window = this.getWindow();
-
-// clear FLAG_TRANSLUCENT_STATUS flag:
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-
-// finally change the color
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
+        // set status bar color
+        setStatusColor();
 
         Intent intent = getIntent();
         selectedExpense = (Expense) intent.getSerializableExtra("selectedExpense");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Update \"" + selectedExpense.getTypeExpense() + "\"");
 
-        dateInput = findViewById(R.id.expenseDate);
-        typeExpense = findViewById(R.id.itemListTypeExpenses);
-        amount = findViewById(R.id.expenseAmount);
-        note = findViewById(R.id.expenseNote);
-        btnSave = findViewById(R.id.expenseBtnUpdate);
+        // find all elements
+        findAllElements();
+        getAndDisplayInfo(); // get selected trip info and display it
+        datePicker();
+        //Dropdown type expense
+        dropDownTypeExpense();
+        btnSave.setOnClickListener(view -> checkCredentials());
+    }
+
+    private void dropDownTypeExpense() {
+        typeExpenseList = getResources().getStringArray(R.array.typeExpense);
+        adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_dropdown_item, typeExpenseList
+        );
+        typeExpense.setAdapter(adapter);
+    }
+
+    private void datePicker() {
         calendar = Calendar.getInstance();
-
-        getAndDisplayInfo();
-
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
@@ -84,17 +83,27 @@ public class UpdateExpenseActivity extends AppCompatActivity {
 
             }
         };
-
         dateInput.setOnClickListener(view -> new DatePickerDialog(UpdateExpenseActivity.this, date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show());
+    }
 
-        //Dropdown type expense
-        typeExpenseList = getResources().getStringArray(R.array.typeExpense);
-        adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, typeExpenseList
-        );
-        typeExpense.setAdapter(adapter);
+    private void findAllElements() {
+        dateInput = findViewById(R.id.expenseDate);
+        typeExpense = findViewById(R.id.itemListTypeExpenses);
+        amount = findViewById(R.id.expenseAmount);
+        note = findViewById(R.id.expenseNote);
+        btnSave = findViewById(R.id.expenseBtnUpdate);
+    }
 
-        btnSave.setOnClickListener(view -> checkCredentials());
+    private void setStatusColor() {
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
+
+        Window window = this.getWindow();
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
     }
 
     private void checkCredentials() {
@@ -106,9 +115,9 @@ public class UpdateExpenseActivity extends AppCompatActivity {
             typeExpense.setError("This is a required field");
             typeExpense.requestFocus();
         } else if (money.isEmpty()) {
-            showError(amount, "This is a required field");
+            showError(amount);
         } else if (date.isEmpty()) {
-            showError(dateInput, "This is a required field");
+            showError(dateInput);
         } else {
             updateExpense();
         }
@@ -134,8 +143,8 @@ public class UpdateExpenseActivity extends AppCompatActivity {
 
     }
 
-    private void showError(EditText input, String s) {
-        input.setError(s);
+    private void showError(EditText input) {
+        input.setError("This is a required field");
         input.requestFocus();
     }
 

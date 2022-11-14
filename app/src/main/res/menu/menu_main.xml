@@ -3,8 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.myapplication.MainActivity">
     <item
+        android:id="@+id/export_data"
+        android:title="Export Data"
+        android:icon="@drawable/download_svg"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+    <item
         android:id="@+id/delete_all"
         android:title="Delete All"
-        android:icon="@drawable/ic_delete"
+        android:icon="@drawable/delete_svg"
         app:showAsAction="always"/>
 </menu>
