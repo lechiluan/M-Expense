@@ -3,6 +3,7 @@ package com.example.m_expense.Authentication;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -37,7 +38,6 @@ public class SplashActivity extends AppCompatActivity {
         slogan.setAnimation(topAnim);
         textView.setAnimation(topAnim);
         btnStart.setAnimation(bottomAnim);
-
         btnStart.setOnClickListener(v -> {
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
         });

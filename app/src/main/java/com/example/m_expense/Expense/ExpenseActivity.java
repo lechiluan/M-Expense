@@ -4,11 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -21,7 +25,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.m_expense.Database.MyDatabaseHelper;
 import com.example.m_expense.R;
 import com.example.m_expense.Trip.Trip;
+import com.example.m_expense.Trip.TripActivity;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +45,8 @@ public class ExpenseActivity extends AppCompatActivity {
     TextView no_data;
 
     MyDatabaseHelper myDB; // database helper class
-
+    String filename = "DataExpense.txt";
+    ArrayList<String> savedList = new ArrayList<>(); // list of saved expense
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +118,12 @@ public class ExpenseActivity extends AppCompatActivity {
         tripRisk.setText(selectedTrip.getRisk());
 
         Float totalExpenses = myDB.getTotalExpense(String.valueOf(selectedTrip.getId()));
-
-        total.setText(String.valueOf(totalExpenses));
+        if(totalExpenses == null){
+            totalExpenses = 0f;
+        }
+        else{
+            total.setText(String.valueOf(totalExpenses));
+        }
     }
 
     @Override
@@ -131,26 +144,63 @@ public class ExpenseActivity extends AppCompatActivity {
             no_data.setVisibility(View.GONE);
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main_expense, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.delete_all) {
+            confirmDialog();
+        }
+        if(item.getItemId() == R.id.export_data){
+            exportData(selectedTrip.getId());
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void exportData(int id) {
+        savedList = myDB.exportExpenseJson(id);
+        if(savedList(filename, savedList)){
+            Toast.makeText(this, "Exported to " + getExternalFilesDir(null) + "/" + filename, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(ExpenseActivity.this, ShowDataActivity.class));
+        }
+        else{
+            Toast.makeText(this, "Export failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean savedList(String filename, ArrayList<String> savedList) {
+        try{
+            FileOutputStream fos = openFileOutput(filename, MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(savedList);
+            oos.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Export failed", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
 
     private void confirmDialog() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
         builder.setMessage("Are you sure you want to delete all Data?");
         builder.setPositiveButton("Yes", (dialogInterface, i) -> {
             MyDatabaseHelper myDB = new MyDatabaseHelper(ExpenseActivity.this);
             myDB.deleteAllExpense();
-            //Refresh Activity
+            // Refresh Activity
             Intent intent = new Intent(ExpenseActivity.this, ExpenseActivity.class);
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
             finish();
         });
-        builder.setNegativeButton("No", (dialogInterface, i) -> {
-
-        });
+        builder.setNegativeButton("No", (dialogInterface, i) -> {});
         builder.create().show();
     }
 }

@@ -3,9 +3,12 @@ package com.example.m_expense.Authentication;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -24,6 +27,26 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     MyDatabaseHelper db;
 
+//    public static class SaveSharedPreference
+//    {
+//        static final String PREF_USER_NAME= "username";
+//
+//        static SharedPreferences getSharedPreferences(Context ctx) {
+//            return PreferenceManager.getDefaultSharedPreferences(ctx);
+//        }
+//
+//        public static void setUserName(Context ctx, String userName)
+//        {
+//            SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+//            editor.putString(PREF_USER_NAME, userName);
+//            editor.apply();
+//        }
+//
+//        public static String getUserName(Context ctx)
+//        {
+//            return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
+//        }
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         Boolean checkData = db.checkUserPass(user, pass);
         if (checkData) {
             Toast.makeText(LoginActivity.this, "Log in successfully !", Toast.LENGTH_SHORT).show();
+//            SaveSharedPreference.setUserName(LoginActivity.this, user);
             Intent intent = new Intent(getApplicationContext(), TripActivity.class);
             startActivity(intent);
         } else {

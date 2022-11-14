@@ -147,12 +147,11 @@ public class TripActivity extends AppCompatActivity {
         builder.setMessage("Are you sure you want to delete all Data?");
         builder.setPositiveButton("Yes", (dialogInterface, i) -> {
             MyDatabaseHelper myDB = new MyDatabaseHelper(TripActivity.this);
-            myDB.deleteAll();
+            myDB.deleteAllTrip();
             //Refresh Activity
             Intent intent = new Intent(TripActivity.this, TripActivity.class);
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
             finish();
         });
         builder.setNegativeButton("No", (dialogInterface, i) -> {

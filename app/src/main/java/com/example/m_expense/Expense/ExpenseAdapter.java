@@ -74,35 +74,14 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
             intent.putExtra("selectedExpense", expense);
             activity.startActivityForResult(intent, 1);
         });
+        holder.expenseLayout.setOnClickListener(view -> {
+            //passing parameter values
+            Intent intent = new Intent(context, UpdateExpenseActivity.class);
+            intent.putExtra("selectedExpense", expense);
+            activity.startActivityForResult(intent, 1);
+        });
 
         holder.deleteExpense.setOnClickListener(v -> deleteExpense(expense, expense.getId()));
-    }
-
-    private void deleteExpense(Expense expense, Integer id) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Delete " + expense.getTypeExpense() + " ?");
-        builder.setMessage("Are you sure you want to delete ?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(context);
-                long result = myDB.deleteExpense(String.valueOf(id));
-                if (result == -1) {
-                    Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Delete Successfully!", Toast.LENGTH_SHORT).show();
-                    activity.finish();
-                    activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    context.startActivity(activity.getIntent());
-                    activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                }
-
-            }
-        });
-        builder.setNegativeButton("No", (dialogInterface, i) -> {
-            // do nothing
-        });
-        builder.create().show();
     }
 
     @Override
@@ -129,5 +108,29 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
             Animation translate_anim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             expenseLayout.setAnimation(translate_anim);
         }
+    }
+
+    private void deleteExpense(Expense expense, Integer id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Delete " + expense.getTypeExpense() + " ?");
+        builder.setMessage("Are you sure you want to delete ?");
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            MyDatabaseHelper myDB = new MyDatabaseHelper(context);
+            long result = myDB.deleteExpense(String.valueOf(id));
+            if (result == -1) {
+                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Delete is successfully!", Toast.LENGTH_SHORT).show();
+                activity.finish();
+                activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                context.startActivity(activity.getIntent());
+                activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+
+        });
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
+            // do nothing
+        });
+        builder.create().show();
     }
 }

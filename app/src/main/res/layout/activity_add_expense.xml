@@ -79,6 +79,35 @@
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"/>
     </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutLocation"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/editext"
+        android:hint="Location"
+        android:textColorHint="@color/black"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutExpenseAmount"
+        app:startIconDrawable="@drawable/ic_baseline_map_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtlocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:background="#00000000"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="#000000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutExpenseDate"
@@ -92,7 +121,7 @@
         android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutExpenseAmount"
+        app:layout_constraintTop_toBottomOf="@+id/layoutLocation"
         app:startIconDrawable="@drawable/ic_calendar">
 
         <EditText
@@ -159,5 +188,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutExpenseNote" />
+
+    <ImageView
+        android:id="@+id/button_location"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutLocation"
+        app:layout_constraintEnd_toEndOf="@+id/layoutExpenseAmount"
+        app:layout_constraintTop_toTopOf="@+id/layoutLocation"
+        app:srcCompat="@drawable/location_svgrepo_com" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

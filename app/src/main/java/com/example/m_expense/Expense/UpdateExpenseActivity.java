@@ -1,8 +1,15 @@
 package com.example.m_expense.Expense;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
@@ -12,8 +19,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -22,6 +31,7 @@ import com.example.m_expense.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -29,8 +39,9 @@ public class UpdateExpenseActivity extends AppCompatActivity {
 
     // UI elements
     AutoCompleteTextView typeExpense;
-    EditText dateInput, amount, note;
+    EditText dateInput, amount, note, location;
     Button btnSave;
+    ImageView buttonLocation;
     String[] typeExpenseList;
     ArrayAdapter<String> adapter;
     Calendar calendar;
@@ -57,8 +68,75 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         //Dropdown type expense
         dropDownTypeExpense();
         btnSave.setOnClickListener(view -> checkCredentials());
+        whenClickLocation();
     }
 
+    private void whenClickLocation() {
+        buttonLocation.setOnClickListener(v -> {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+            }
+            else {
+                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                Location Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                try {
+                    String city = hereLocation(Location.getLatitude(), Location.getLongitude());
+                    location.setText(city);
+                }
+                catch (Exception e){
+                    Toast.makeText(this, "Please turn on your location", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 1000:
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+                    }else{
+                        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                        Location Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        try {
+                            String city = hereLocation(Location.getLatitude(), Location.getLongitude());
+                            location.setText(city);
+                        }
+                        catch (Exception e){
+                            Toast.makeText(this, "Please turn on your location", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    private String hereLocation(double latitude, double longitude) {
+        String cityName = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 10);
+            if (addresses.size() > 0) {
+                for (Address adr : addresses) {
+                    if (adr.getLocality() != null && adr.getLocality().length() > 0) {
+                        cityName = adr.getLocality();
+                        cityName = cityName + ", " + adr.getAdminArea() + ", " + adr.getCountryName();
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cityName;
+    }
     private void dropDownTypeExpense() {
         typeExpenseList = getResources().getStringArray(R.array.typeExpense);
         adapter = new ArrayAdapter<>(
@@ -95,6 +173,8 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         amount = findViewById(R.id.expenseAmount);
         note = findViewById(R.id.expenseNote);
         btnSave = findViewById(R.id.expenseBtnUpdate);
+        buttonLocation = findViewById(R.id.button_location);
+        location = findViewById(R.id.location);
     }
 
     private void setStatusColor() {
@@ -112,6 +192,7 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         String type = typeExpense.getText().toString().trim();
         String money = amount.getText().toString().trim();
         String date = dateInput.getText().toString().trim();
+        String Location = location.getText().toString().trim();
 
         if (type.isEmpty()) {
             typeExpense.setError("This is a required field");
@@ -120,7 +201,10 @@ public class UpdateExpenseActivity extends AppCompatActivity {
             showError(amount);
         } else if (date.isEmpty()) {
             showError(dateInput);
-        } else {
+        } else if (Location.isEmpty()) {
+            showError(location);
+        }
+        else {
             typeExpense.setError(null);
             amount.setError(null);
             dateInput.setError(null);
@@ -135,6 +219,7 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         selectedExpense.setAmount(Float.parseFloat(amount.getText().toString().trim()));
         selectedExpense.setDate(dateInput.getText().toString().trim());
         selectedExpense.setNote(note.getText().toString().trim());
+        selectedExpense.setLocation(location.getText().toString().trim());
 
         long result = myDB.updateExpense(selectedExpense);
 
@@ -158,6 +243,7 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         amount.setText(String.valueOf(selectedExpense.getAmount()));
         dateInput.setText(selectedExpense.getDate());
         note.setText(selectedExpense.getNote());
+        location.setText(selectedExpense.getLocation());
     }
 
     @Override
