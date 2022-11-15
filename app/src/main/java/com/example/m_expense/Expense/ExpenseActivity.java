@@ -1,9 +1,13 @@
 package com.example.m_expense.Expense;
 
+import static android.os.Environment.getExternalStoragePublicDirectory;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,14 +30,22 @@ import com.example.m_expense.Database.MyDatabaseHelper;
 import com.example.m_expense.R;
 import com.example.m_expense.Trip.Trip;
 import com.example.m_expense.Trip.TripActivity;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("ALL")
 public class ExpenseActivity extends AppCompatActivity {
     // UI elements
     TextView tripName, destination, dateFrom, dateTo, tripRisk, total;
@@ -45,7 +57,9 @@ public class ExpenseActivity extends AppCompatActivity {
     TextView no_data;
 
     MyDatabaseHelper myDB; // database helper class
-    String filename = "DataExpense.txt";
+    static String filename = "DataExpense";
+    static String fileExtension = ".json";
+    static String fullFileName = filename + fileExtension;
     ArrayList<String> savedList = new ArrayList<>(); // list of saved expense
 
     @Override
@@ -61,7 +75,6 @@ public class ExpenseActivity extends AppCompatActivity {
         expenses = new ArrayList<>();
 
         findAllElements();
-
         displayOrNot();
         // recycler view for expense list
         recyclerViewTrip();
@@ -156,33 +169,46 @@ public class ExpenseActivity extends AppCompatActivity {
             if (expenses.size() == 0) {
                 Toast.makeText(this, "No data to export !", Toast.LENGTH_SHORT).show();
             } else {
-                exportData(selectedTrip.getId());
+                confirmDialogExport();
             }
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void exportData(int id) {
-        savedList = myDB.exportExpenseJson(id);
-        if(savedList(filename, savedList)){
-            Toast.makeText(this, "Exported to " + getExternalFilesDir(null) + "/" + filename, Toast.LENGTH_SHORT).show();
+        // clear all data in file saved
+        savedList.clear();
+        // get all expense of selected trip
+        expenses = myDB.getAllExpense(id);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(expenses);
+        savedList.add(json);
+
+        if(savedList(fullFileName, savedList)){
+//            Toast.makeText(this, "Exported to " + getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + filename, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Exported to " + "Download/" + fullFileName, Toast.LENGTH_LONG).show();
             startActivity(new Intent(ExpenseActivity.this, ShowDataActivity.class));
         }
         else{
-            Toast.makeText(this, "Export failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Export is failed", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private boolean savedList(String filename, ArrayList<String> savedList) {
+    private boolean savedList(String fullFileName, ArrayList<String> savedList) {
         try{
-            FileOutputStream fos = openFileOutput(filename, MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(savedList);
-            oos.close();
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fullFileName));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream); // create an output stream writer object
+            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter); // create a buffered writer object to write to the file
+            bufferedWriter.write(String.valueOf(savedList)); // write the URL to the file
+            bufferedWriter.newLine(); // write a new line
+            bufferedWriter.flush(); // flush the buffer
+            bufferedWriter.close(); // close the buffered writer
+            outputStreamWriter.close(); // close the output stream writer
             return true;
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Export failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Export is failed", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -190,18 +216,41 @@ public class ExpenseActivity extends AppCompatActivity {
     private void confirmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
-        builder.setMessage("Are you sure you want to delete all Data?");
+        builder.setMessage("Are you sure you want to delete all expenses?");
         builder.setPositiveButton("Yes", (dialogInterface, i) -> {
             MyDatabaseHelper myDB = new MyDatabaseHelper(ExpenseActivity.this);
             myDB.deleteAllExpense();
             // Refresh Activity
             Toast.makeText(ExpenseActivity.this, "Deleted All Expenses is Successfully! ", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(ExpenseActivity.this, ExpenseActivity.class);
-            startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            startActivity(getIntent());
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
         builder.setNegativeButton("No", (dialogInterface, i) -> {});
         builder.create().show();
+    }
+    private void confirmDialogExport() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Export All?");
+        builder.setMessage("Do you want to export all expenses?");
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            // check fullFileName if exits will change filename variable
+            if (checkFile(fullFileName)) {
+                int count = 0; // count number of file exits
+                do {
+                    count++;
+                    fullFileName = filename + "(" + count + ")" + fileExtension;
+                } while (checkFile(fullFileName));
+            }
+            exportData(selectedTrip.getId());
+        });
+        builder.setNegativeButton("No", (dialogInterface, i) -> {});
+        builder.create().show();
+    }
+
+    private boolean checkFile(String fullFileName) {
+        File file = new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fullFileName);
+        return file.exists();
     }
 }

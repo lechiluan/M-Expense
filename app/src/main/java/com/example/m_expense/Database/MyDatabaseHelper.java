@@ -279,51 +279,5 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_USERNAME + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{user, pass});
         return cursor.getCount() > 0;
     }
-    public ArrayList<String> exportExpenseJson(Integer id) {
-        final String query = String.format(
-                "SELECT b.%s, %s, %s, %s, %s, %s, %s, %s, %s FROM " +
-                        "%s a, %s b WHERE a.%s = b.%s AND b.%s = %s ORDER BY b.%s DESC",
-                COLUMN_ID, COLUMN_TYPE, COLUMN_AMOUNT, COLUMN_DATE_EXPENSE, COLUMN_NOTE, COLUMN_TRIP_ID, COLUMN_LOCATION,COLUMN_NAME, COLUMN_LOCATION, TABLE_TRIP, TABLE_EXPENSE, COLUMN_ID, COLUMN_TRIP_ID, COLUMN_TRIP_ID, id, COLUMN_ID
-        );
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        final ArrayList<String> list = new ArrayList<>();
-        final Cursor cursor;
-        if (db != null) {
-            cursor = db.rawQuery(query, null);
-            StringBuilder jsonFormat = new StringBuilder();
-            if (cursor.moveToFirst()) {
-                jsonFormat.append("\n{\n\t\"").append(cursor.getString(7)).append("\":[");
-                do {
-                    String type = cursor.getString(1);
-                    String amount = String.valueOf(cursor.getFloat(2));
-                    String date = cursor.getString(3);
-                    String comments = cursor.getString(4);
-                    String location = cursor.getString(8);
-
-                    if (!cursor.isLast()) {
-                        jsonFormat.append("\n\t\t{\n\t\t\t\"expense\":" + "\"").append(type).append("\",\n");
-                        jsonFormat.append("\t\t\t\"amount\":" + "\"").append(amount).append("\",\n");
-                        jsonFormat.append("\t\t\t\"date\":" + "\"").append(date).append("\",\n");
-                        jsonFormat.append("\t\t\t\"location\":" + "\"").append(location).append("\",\n");
-                        jsonFormat.append("\t\t\t\"comments\":" + "\"").append(comments).append("\",\n");
-                        jsonFormat.append("\t\t},");
-                    } else {
-                        jsonFormat.append("\n\t\t{\n\t\t\t\"expense\":" + "\"").append(type).append("\",\n");
-                        jsonFormat.append("\t\t\t\"amount\":" + "\"").append(amount).append("\",\n");
-                        jsonFormat.append("\t\t\t\"date\":" + "\"").append(date).append("\",\n");
-                        jsonFormat.append("\t\t\t\"location\":" + "\"").append(location).append("\",\n");
-                        jsonFormat.append("\t\t\t\"comments\":" + "\"").append(comments).append("\",\n");
-                        jsonFormat.append("\t\t}");
-                    }
-                } while (cursor.moveToNext());
-                jsonFormat.append("\n\t]\n}");
-                cursor.close();
-            }
-            list.add(jsonFormat.toString());
-            db.close();
-        }
-        return list;
-    }
 }
 

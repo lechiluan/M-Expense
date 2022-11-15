@@ -73,8 +73,9 @@ public class UpdateTripActivity extends AppCompatActivity {
             showError(destination, "This is a required field");
         } else if (dateS.isEmpty()) {
             showError(dateStart, "This is a required field");
-        } else if (new Date(dateS).after(new Date(dateE))) {
-            showError(dateEnd, "Date end must be after start date");
+        } else if (dateS.compareTo(dateE) > 0) {
+            showError(dateEnd, "This is a required field");
+            Toast.makeText(this, "Date End must be after Date Start! ", Toast.LENGTH_SHORT).show();
         } else if (dateE.isEmpty()) {
             showError(dateEnd, "This is a required field");
         } else {

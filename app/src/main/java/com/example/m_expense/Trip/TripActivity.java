@@ -93,7 +93,6 @@ public class TripActivity extends AppCompatActivity {
         no_data = findViewById(R.id.no_data);
         btnAdd = findViewById(R.id.add_button);
         searchView = findViewById(R.id.searchTrip);
-
     }
 
     private void setStatusColor() {
@@ -140,10 +139,7 @@ public class TripActivity extends AppCompatActivity {
             confirmDialog();
         }
         if(item.getItemId() == R.id.logout){
-            Intent intent = new Intent(TripActivity.this, LoginActivity.class);
-            startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            finish();
+            confirmDialogLogout();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -168,5 +164,17 @@ public class TripActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
-
+    private void confirmDialogLogout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Logout?");
+        builder.setMessage("Do you want to logout?");
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            Intent intent = new Intent(TripActivity.this, LoginActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+        });
+        builder.setNegativeButton("No", (dialogInterface, i) -> {});
+        builder.create().show();
+    }
 }

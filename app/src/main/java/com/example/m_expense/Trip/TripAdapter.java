@@ -97,26 +97,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Delete " + name + " ?");
         builder.setMessage("Are you sure you want to delete ?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(context);
-                long result = myDB.delete(String.valueOf(id));
-                if (result == -1) {
-                    Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Delete Successfully!", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, TripActivity.class));
-                    activity.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
-                }
-
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            MyDatabaseHelper myDB = new MyDatabaseHelper(context);
+            long result = myDB.delete(String.valueOf(id));
+            if (result == -1) {
+                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Delete Successfully!", Toast.LENGTH_SHORT).show();
+                context.startActivity(new Intent(context, TripActivity.class));
+                activity.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // do nothing
-            }
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
+
         });
         builder.create().show();
     }

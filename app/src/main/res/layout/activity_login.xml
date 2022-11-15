@@ -78,14 +78,13 @@
             android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
+            android:inputType="textPassword"
             android:background="#00000000"
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             android:textColor="#000000"/>
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <Button
         android:id="@+id/btnLogin"
