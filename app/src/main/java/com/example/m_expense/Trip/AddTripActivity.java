@@ -1,6 +1,8 @@
 package com.example.m_expense.Trip;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -141,8 +143,30 @@ public class AddTripActivity extends AppCompatActivity {
             dateStart.setError(null);
             dateEnd.setError(null);
             destination.setError(null);
-            addTrip();
+            confirmDataTrip();
         }
+    }
+
+    public void confirmDataTrip(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String tripName = Objects.requireNonNull(name.getText()).toString().trim();
+        String location = Objects.requireNonNull(destination.getText()).toString().trim();
+        String dateS = dateStart.getText().toString().trim();
+        String dateE = dateEnd.getText().toString().trim();
+        String description = Objects.requireNonNull(desc.getText()).toString().trim();
+        radioGroup = findViewById(R.id.radioGroup);
+        selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
+        risk = selectedRadioButton.getText().toString();
+
+        builder.setTitle("Do you want to add this trip?");
+        builder.setMessage("Trip Name: "+tripName +
+                "\nTrip Destination: " + location + "\nDate Start : " + dateS+
+                "\nDate End: " + dateE + "\nDescription: "+ description + "\nTrip Risk Assessment: " + risk);
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> addTrip());
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+        });
+        builder.create().show();
     }
 
     private void addTrip() {
@@ -174,6 +198,4 @@ public class AddTripActivity extends AppCompatActivity {
         input.setError("This is a required field");
         input.requestFocus();
     }
-
-
 }
