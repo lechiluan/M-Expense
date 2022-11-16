@@ -22,7 +22,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -51,7 +50,7 @@ public class UpdateTripActivity extends AppCompatActivity {
         // set date picker
         DatePickerStart();
         DatePickerEnd();
-
+        // when click save button
         whenClickSave();
     }
 
@@ -68,16 +67,16 @@ public class UpdateTripActivity extends AppCompatActivity {
         selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
 
         if (tripName.isEmpty()) {
-            showError(name, "This is a required field");
+            showError(name);
         } else if (location.isEmpty()) {
-            showError(destination, "This is a required field");
+            showError(destination);
         } else if (dateS.isEmpty()) {
-            showError(dateStart, "This is a required field");
+            showError(dateStart);
         } else if (dateS.compareTo(dateE) > 0) {
-            showError(dateEnd, "This is a required field");
+            showError(dateEnd);
             Toast.makeText(this, "Date End must be after Date Start! ", Toast.LENGTH_SHORT).show();
         } else if (dateE.isEmpty()) {
-            showError(dateEnd, "This is a required field");
+            showError(dateEnd);
         } else {
             name.setError(null);
             dateStart.setError(null);
@@ -90,7 +89,6 @@ public class UpdateTripActivity extends AppCompatActivity {
 
     private void updateTrip() {
         MyDatabaseHelper myDB = new MyDatabaseHelper(this);
-
         radioGroup = findViewById(R.id.radioGroup);
         selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
         String risk = selectedRadioButton.getText().toString();
@@ -102,7 +100,7 @@ public class UpdateTripActivity extends AppCompatActivity {
         selectedTrip.setRisk(risk);
         selectedTrip.setDesc(Objects.requireNonNull(desc.getText()).toString().trim());
 
-        long result = myDB.update(selectedTrip);
+        long result = myDB.updateTrip(selectedTrip);
         if (result == -1) {
             Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
         } else {
@@ -112,8 +110,8 @@ public class UpdateTripActivity extends AppCompatActivity {
         }
     }
 
-    private void showError(EditText input, String s) {
-        input.setError(s);
+    private void showError(EditText input) {
+        input.setError("This is a required field");
         input.requestFocus();
     }
     private void DatePickerEnd() {
@@ -124,7 +122,6 @@ public class UpdateTripActivity extends AppCompatActivity {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
                 updateCalendar();
             }
 
@@ -145,7 +142,6 @@ public class UpdateTripActivity extends AppCompatActivity {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
                 updateCalendar();
             }
 
@@ -181,10 +177,9 @@ public class UpdateTripActivity extends AppCompatActivity {
     }
 
     private void getAndDisplayInfo() {
+        // Display the selected trip's information
         Intent intent = getIntent();
         selectedTrip = (Trip) intent.getSerializableExtra("selectedTrip");
-
-        //display in textview
         name.setText(selectedTrip.getName());
         destination.setText(selectedTrip.getDes());
         dateStart.setText(selectedTrip.getDateFrom());

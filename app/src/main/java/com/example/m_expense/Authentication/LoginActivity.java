@@ -3,12 +3,9 @@ package com.example.m_expense.Authentication;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -23,6 +20,7 @@ import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // UI elements
     public static String currentUser;
     EditText username, password;
     Button btnLogin;
@@ -33,15 +31,21 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // find all elements
+        findAllElements();
+        // Set status bar color
+        setStatusColor();
+        btnLogin.setOnClickListener(v -> checkInput());
+    }
+
+    private void findAllElements() {
         username = findViewById(R.id.txtUsername);
         password = findViewById(R.id.txtPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        // Set status bar color
-        setStatusColor();
-
-        btnLogin.setOnClickListener(v -> checkInput());
     }
+
     private void setStatusColor() {
+        // set status bar color
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
         Window window = this.getWindow();
         // clear FLAG_TRANSLUCENT_STATUS flag:
@@ -52,19 +56,19 @@ public class LoginActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
     }
     private void checkInput() {
-        db = new MyDatabaseHelper(this);
-        String Username = username.getText().toString().trim();
-        String Password = password.getText().toString().trim();
+        db = new MyDatabaseHelper(this); // create database
+        String Username = username.getText().toString().trim(); // get username from input field and trim it
+        String Password = password.getText().toString().trim(); // get password from input field and trim it
         if (Username.isEmpty()) {
-            showError(username);
+            showError(username); // if username is empty, show error
         } else if (Password.isEmpty()) {
-            showError(password);
+            showError(password); // if password is empty, show error
         }
-        Boolean checkData = db.checkUserPass(Username, Password);
+        Boolean checkData = db.checkUserPass(Username, Password); // check if username and password are correct
         if (checkData) {
-            Toast.makeText(LoginActivity.this, "Log in is successfully !", Toast.LENGTH_SHORT).show();
-            currentUser = Username;
-            Intent intent = new Intent(getApplicationContext(), TripActivity.class);
+            Toast.makeText(LoginActivity.this, "Log in is successfully !", Toast.LENGTH_SHORT).show(); // if username and password are correct, show message
+            currentUser = Username; // set current user to display in TripActivity
+            Intent intent = new Intent(getApplicationContext(), TripActivity.class); // create intent to go to TripActivity
             startActivity(intent);
             finish();
         } else {

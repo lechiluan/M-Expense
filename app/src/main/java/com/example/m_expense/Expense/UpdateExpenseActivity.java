@@ -63,16 +63,20 @@ public class UpdateExpenseActivity extends AppCompatActivity {
 
         // find all elements
         findAllElements();
-        getAndDisplayInfo(); // get selected trip info and display it
+        // get selected trip info and display it
+        getAndDisplayInfo();
         datePicker();
-        //Dropdown type expense
+        // dropdown type expense
         dropDownTypeExpense();
-        btnSave.setOnClickListener(view -> checkCredentials());
+        // when click save button
         whenClickLocation();
+        // when click save button
+        btnSave.setOnClickListener(view -> checkCredentials());
     }
 
     private void whenClickLocation() {
         buttonLocation.setOnClickListener(v -> {
+            // check permission for location
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
             }
@@ -93,27 +97,24 @@ public class UpdateExpenseActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case 1000:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
-                    }else{
-                        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                        Location Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        try {
-                            String city = hereLocation(Location.getLatitude(), Location.getLongitude());
-                            location.setText(city);
-                        }
-                        catch (Exception e){
-                            Toast.makeText(this, "Please turn on your location", Toast.LENGTH_SHORT).show();
-                        }
+        // check permission for location
+        if (requestCode == 1000) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+                } else {
+                    LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                    Location Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    try {
+                        String city = hereLocation(Location.getLatitude(), Location.getLongitude());
+                        location.setText(city);
+                    } catch (Exception e) {
+                        Toast.makeText(this, "Please turn on your location", Toast.LENGTH_SHORT).show();
                     }
                 }
-                else {
-                    Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
-                }
-                break;
+            } else {
+                Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -139,9 +140,7 @@ public class UpdateExpenseActivity extends AppCompatActivity {
     }
     private void dropDownTypeExpense() {
         typeExpenseList = getResources().getStringArray(R.array.typeExpense);
-        adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, typeExpenseList
-        );
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, typeExpenseList);
         typeExpense.setAdapter(adapter);
     }
 
@@ -153,7 +152,6 @@ public class UpdateExpenseActivity extends AppCompatActivity {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
                 updateCalendar();
             }
 
@@ -161,7 +159,6 @@ public class UpdateExpenseActivity extends AppCompatActivity {
                 String format = "dd MMM yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
                 dateInput.setText(sdf.format(calendar.getTime()));
-
             }
         };
         dateInput.setOnClickListener(view -> new DatePickerDialog(UpdateExpenseActivity.this, date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show());
@@ -193,7 +190,6 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         String money = amount.getText().toString().trim();
         String date = dateInput.getText().toString().trim();
         String Location = location.getText().toString().trim();
-
         if (type.isEmpty()) {
             typeExpense.setError("This is a required field");
             typeExpense.requestFocus();
@@ -214,7 +210,6 @@ public class UpdateExpenseActivity extends AppCompatActivity {
 
     private void updateExpense() {
         MyDatabaseHelper myDB = new MyDatabaseHelper(this);
-
         selectedExpense.setTypeExpense(typeExpense.getText().toString().trim());
         selectedExpense.setAmount(Float.parseFloat(amount.getText().toString().trim()));
         selectedExpense.setDate(dateInput.getText().toString().trim());
@@ -222,7 +217,6 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         selectedExpense.setLocation(location.getText().toString().trim());
 
         long result = myDB.updateExpense(selectedExpense);
-
         if (result == -1) {
             Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
         } else {
@@ -230,7 +224,6 @@ public class UpdateExpenseActivity extends AppCompatActivity {
             onBackPressed();
             finishActivity(1);
         }
-
     }
 
     private void showError(EditText input) {

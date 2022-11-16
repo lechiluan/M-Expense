@@ -18,9 +18,10 @@ import java.util.List;
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private final Context context;
-    private static final String DATABASE_NAME = "ManageExpense.db";
+    private static final String DATABASE_NAME = "MExpense.db";
     private static final int DATABASE_VERSION = 1;
 
+    // Trip table
     private static final String TABLE_TRIP = "trip";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "tripName";
@@ -30,6 +31,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_RISK = "risk";
     private static final String COLUMN_DESC = "tripDesc";
 
+    // Expense table
     private static final String TABLE_EXPENSE = "Expense";
     private static final String COLUMN_TYPE = "expenseType";
     private static final String COLUMN_AMOUNT = "expenseAmount";
@@ -37,20 +39,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_NOTE = "expenseNote";
     private static final String COLUMN_LOCATION = "expenseLocation";
     public static final String COLUMN_TRIP_ID = "tripId";
-    public static final String COLUMN_EXPENSE_IMAGE = "expenseImage";
 
 
-    // User Table
+    // User table
     public static final String TABLE_USER = "Login";
     private static final String COLUMN_USERNAME = "username";
     private static final String COLUMN_PASSWORD = "password";
 
-
+    // Create table query
     public MyDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
 
+    // This is called the first time a database is accessed. There should be code in here to create a new database.
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         dropAndRecreate(db);
@@ -60,6 +62,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         // delete table trip and expense
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRIP);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         onCreate(db);
     }
     @Override
@@ -69,6 +72,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         createTablesUser(db);
         insertDataUser(db);
     }
+
     private void insertDataUser(SQLiteDatabase db) {
         ContentValues cv = new ContentValues();
         // add many users
@@ -82,13 +86,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_PASSWORD, "123456");
         db.insert(TABLE_USER, null, cv);
     }
-    // Create User Table
+
     private void createTablesUser(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_USER +
                 " (" + COLUMN_USERNAME + " TEXT PRIMARY KEY, " +
                 COLUMN_PASSWORD + " TEXT not null);";
         db.execSQL(query);
     }
+
     private void createTables(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_TRIP +
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -110,16 +115,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_NOTE + " TEXT, " +
                 COLUMN_LOCATION + " TEXT, " +
                 COLUMN_TRIP_ID + " INTEGER references " + TABLE_TRIP + "(" + COLUMN_ID + "), " +
-                COLUMN_EXPENSE_IMAGE + "TEXT" +
                 COLUMN_USERNAME + " INTEGER references " + TABLE_USER + "(" + COLUMN_ID + "));";
         db.execSQL(query);
     }
 
-    public long add(Trip trip) {
+    public long addTrip (Trip trip) {
         long insertId;
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
+        SQLiteDatabase db = this.getWritableDatabase(); // get writable database
+        ContentValues values = new ContentValues(); // create a new map of values, where column names are the keys
         values.put(COLUMN_NAME, trip.getName());
         values.put(COLUMN_DESTINATION, trip.getDes());
         values.put(COLUMN_DATE_FROM, trip.getDateFrom());
@@ -135,9 +138,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public long addExpense(Expense expense) {
         long insertId;
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
+        SQLiteDatabase db = this.getWritableDatabase(); // get writable database
+        ContentValues values = new ContentValues(); // create a new map of values, where column names are the keys
         values.put(COLUMN_TYPE, expense.getTypeExpense());
         values.put(COLUMN_AMOUNT, expense.getAmount());
         values.put(COLUMN_LOCATION, expense.getLocation());
@@ -151,16 +153,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return insertId;
     }
 
-    public List<Trip> getAll() {
-        final String query = "SELECT * FROM " + TABLE_TRIP +" ORDER BY " + COLUMN_ID + " DESC";
-        SQLiteDatabase db = this.getReadableDatabase();
+    public List<Trip> getAllTrip() {
+        final String query = "SELECT * FROM " + TABLE_TRIP +" ORDER BY " + COLUMN_ID + " DESC"; // select all query
+        SQLiteDatabase db = this.getReadableDatabase(); // get readable database
         final List<Trip> list = new ArrayList<>();
-        final Cursor cursor;
+        final Cursor cursor; // cursor to iterate through the result
         if (db != null) {
             cursor = db.rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
-                    Trip trip = new Trip();
+                    Trip trip = new Trip(); // create a new trip object
                     trip.setId(cursor.getInt(0));
                     trip.setName(cursor.getString(1));
                     trip.setDes(cursor.getString(2));
@@ -177,14 +179,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         return list;
     }
+
     public List<Expense> getAllExpense(Integer id) {
         final String query = String.format(
                 "SELECT b.%s, %s, %s, %s, %s, %s, %s FROM " +
                         "%s a, %s b WHERE a.%s = b.%s AND b.%s = %s ORDER BY b.%s DESC",
                 COLUMN_ID, COLUMN_TYPE, COLUMN_AMOUNT, COLUMN_DATE_EXPENSE, COLUMN_NOTE, COLUMN_TRIP_ID, COLUMN_LOCATION,TABLE_TRIP, TABLE_EXPENSE, COLUMN_ID, COLUMN_TRIP_ID, COLUMN_TRIP_ID, id, COLUMN_ID
-        );
-        SQLiteDatabase db = this.getReadableDatabase();
-        final List<Expense> list = new ArrayList<>();
+        ); // select all query
+        SQLiteDatabase db = this.getReadableDatabase(); // get readable database
+        final List<Expense> list = new ArrayList<>(); // list to store all the trip objects
         final Cursor cursor;
         if (db != null) {
             cursor = db.rawQuery(query, null);
@@ -208,15 +211,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Float getTotalExpense(String id){
-        float total = 0f;
-        String query = "SELECT " + COLUMN_AMOUNT + " FROM " + TABLE_EXPENSE + " WHERE " + COLUMN_TRIP_ID + " = " + id;
+        float total = 0f; // total expense
+        String query = "SELECT " + COLUMN_AMOUNT + " FROM " + TABLE_EXPENSE + " WHERE " + COLUMN_TRIP_ID + " = " + id; // select all query
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         final Cursor cursor;
         if (db != null) {
             cursor = db.rawQuery(query, null);
-            if (cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) { // if there is at least one row
                 do {
                     total += cursor.getFloat(0);
                 } while (cursor.moveToNext());
@@ -227,9 +230,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return total;
     }
 
-    public long update(Trip trip) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+    public long updateTrip (Trip trip) {
+        SQLiteDatabase db = this.getWritableDatabase(); // get writable database
+        ContentValues values = new ContentValues(); // create a new map of values, where column names are the keys
         values.put(COLUMN_NAME, trip.getName());
         values.put(COLUMN_DESTINATION, trip.getDes());
         values.put(COLUMN_DATE_FROM, trip.getDateFrom());
@@ -237,7 +240,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_RISK, trip.getRisk());
         values.put(COLUMN_DESC, trip.getDesc());
 
-        return db.update(TABLE_TRIP, values, "id=?", new String[]{String.valueOf(trip.getId())});
+        return db.update(TABLE_TRIP, values, "id=?", new String[]{String.valueOf(trip.getId())}); // updating row
     }
 
     public long updateExpense(Expense expense) {
@@ -249,10 +252,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_LOCATION, expense.getLocation());
         values.put(COLUMN_NOTE, expense.getNote());
 
-        return db.update(TABLE_EXPENSE, values, "id=?", new String[]{String.valueOf(expense.getId())});
+        return db.update(TABLE_EXPENSE, values, "id=?", new String[]{String.valueOf(expense.getId())}); // updating row
     }
 
-    public long delete(String row_id) {
+    public long deleteTrip (String row_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_TRIP, "id=?", new String[]{row_id});
     }
@@ -278,6 +281,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_USERNAME + " = ? AND " + COLUMN_PASSWORD + " = ?", new String[]{user, pass});
         return cursor.getCount() > 0;
+    }
+
+    public Context getContext() {
+        return context;
     }
 }
 

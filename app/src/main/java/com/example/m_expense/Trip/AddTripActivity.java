@@ -22,7 +22,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -48,6 +47,7 @@ public class AddTripActivity extends AppCompatActivity {
         // set date picker
         datePickerStart();
         datePickerEnd();
+        // when click add button
         whenClickAdd();
     }
 
@@ -57,7 +57,7 @@ public class AddTripActivity extends AppCompatActivity {
     }
 
     private void datePickerStart() {
-        calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance(); // get current date
         //Date Picker for EditText Date From
         DatePickerDialog.OnDateSetListener datePickerStart = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -65,7 +65,6 @@ public class AddTripActivity extends AppCompatActivity {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
                 updateCalendar();
             }
             private void updateCalendar() {
@@ -86,10 +85,8 @@ public class AddTripActivity extends AppCompatActivity {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
                 updateCalendar();
             }
-
             private void updateCalendar() {
                 String format = "dd MMM yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
@@ -98,7 +95,6 @@ public class AddTripActivity extends AppCompatActivity {
         };
         dateEnd.setOnClickListener(view -> new DatePickerDialog(AddTripActivity.this, datePickerEnd, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show());
     }
-
 
     private void setStatusColor() {
         Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
@@ -125,28 +121,26 @@ public class AddTripActivity extends AppCompatActivity {
         String location = Objects.requireNonNull(destination.getText()).toString().trim();
         String dateS = dateStart.getText().toString().trim();
         String dateE = dateEnd.getText().toString().trim();
-
         radioGroup = findViewById(R.id.radioGroup);
         selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
         risk = selectedRadioButton.getText().toString();
 
         if (tripName.isEmpty()) {
-            showError(name, "This is a required field");
+            showError(name);
         } else if (location.isEmpty()) {
-            showError(destination, "This is a required field");
+            showError(destination);
         } else if (dateS.isEmpty()) {
-            showError(dateStart, "This is a required field");
+            showError(dateStart);
         } else if (dateS.compareTo(dateE) > 0) {
-            showError(dateEnd, "This is a required field");
+            showError(dateEnd);
             Toast.makeText(this, "Date End must be after Date Start! ", Toast.LENGTH_SHORT).show();
         } else if (dateE.isEmpty()) {
-            showError(dateEnd, "This is a required field");
+            showError(dateEnd);
         } else {
             name.setError(null);
             dateStart.setError(null);
             dateEnd.setError(null);
             destination.setError(null);
-            //method call for insert function
             addTrip();
         }
     }
@@ -166,7 +160,7 @@ public class AddTripActivity extends AppCompatActivity {
         trip.setRisk(risk);
 
 
-        long result = myDB.add(trip);
+        long result = myDB.addTrip(trip);
         if (result == -1) {
             Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
         } else {
@@ -176,8 +170,8 @@ public class AddTripActivity extends AppCompatActivity {
         }
     }
 
-    private void showError(EditText input, String s) {
-        input.setError(s);
+    private void showError(EditText input) {
+        input.setError("This is a required field");
         input.requestFocus();
     }
 

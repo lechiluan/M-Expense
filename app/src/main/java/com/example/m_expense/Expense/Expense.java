@@ -72,7 +72,7 @@ public class Expense implements Serializable {
         this.tripID = tripID;
     }
 
-    public Expense(int id, String type, String des, String date, String note, float amount, int tripID) {
+    public Expense(int id, String type, String date, String note, float amount, int tripID) {
         this.idExpense = id;
         this.TypeExpense = type;
         this.Date = date;
@@ -80,7 +80,7 @@ public class Expense implements Serializable {
         this.Amount = amount;
         this.tripID = tripID;
     }
-    public Expense(String type, String des, String date, String note, float amount, int tripID) {
+    public Expense(String type, String date, String note, float amount, int tripID) {
         this.TypeExpense = type;
         this.Date = date;
         this.Note = note;

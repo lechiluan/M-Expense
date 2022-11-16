@@ -63,16 +63,24 @@ public class AddExpenseActivity extends AppCompatActivity {
         selectedTrip = (Trip) intent.getSerializableExtra("selectedTrip"); // get selected trip from previous activity
         // set status bar color
         setStatusColor();
+        // find all elements
         findAllElements();
+        // set date picker
         dropDownMenu();
         datePicker();
-        //setOnClickListener to show date picker
-        btnAdd.setOnClickListener(v -> checkCredentials());
+        // when click add button
+        whenClickAdd();
+        // when click location button
         whenClickLocation();
+    }
+
+    private void whenClickAdd() {
+        btnAdd.setOnClickListener(v -> checkCredentials());
     }
 
     private void whenClickLocation() {
         buttonLocation.setOnClickListener(v -> {
+            // check permission for location
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
             }
@@ -93,39 +101,38 @@ public class AddExpenseActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case 1000:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
-                    }else{
-                        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                        Location Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        try {
-                            String city = hereLocation(Location.getLatitude(), Location.getLongitude());
-                            location.setText(city);
-                        }
-                        catch (Exception e){
-                            Toast.makeText(this, "Please turn on your location", Toast.LENGTH_SHORT).show();
-                        }
+        // check permission for location
+        if (requestCode == 1000) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+                }else{
+                    LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                    Location Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    try {
+                        String city = hereLocation(Location.getLatitude(), Location.getLongitude()); // get city name
+                        location.setText(city); // set location
+                    }
+                    catch (Exception e){
+                        Toast.makeText(this, "Please turn on your location", Toast.LENGTH_SHORT).show();
                     }
                 }
-                else {
-                    Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
-                }
-                break;
+            }
+            else {
+                Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     private String hereLocation(double latitude, double longitude) {
         String cityName = "";
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        List<Address> addresses;
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault()); // get city name
+        List<Address> addresses; // list of address
         try {
-            addresses = geocoder.getFromLocation(latitude, longitude, 10);
+            addresses = geocoder.getFromLocation(latitude, longitude, 10); // get address from latitude and longitude
             if (addresses.size() > 0) {
                 for (Address adr : addresses) {
-                    if (adr.getLocality() != null && adr.getLocality().length() > 0) {
+                    if (adr.getLocality() != null && adr.getLocality().length() > 0) { // check if city name is not null
                         cityName = adr.getLocality();
                         cityName = cityName + ", " + adr.getAdminArea() + ", " + adr.getCountryName();
                         break;
@@ -141,14 +148,12 @@ public class AddExpenseActivity extends AppCompatActivity {
     private void dropDownMenu() {
         //Dropdown type expense
         typeExpenseList = getResources().getStringArray(R.array.typeExpense);
-        adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, typeExpenseList
-        );
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, typeExpenseList); // set adapter for dropdown
         typeExpense.setAdapter(adapter);
     }
 
     private void datePicker() {
-        calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance(); // get current date
         // Date picker dialog for date field
         DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -193,7 +198,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         String type = typeExpense.getText().toString().trim();
         String amountInput = Objects.requireNonNull(amount.getText()).toString().trim();
         String dateExpense = date.getText().toString().trim();
-        String Loation = Objects.requireNonNull(location.getText()).toString().trim();
+        String Location = Objects.requireNonNull(location.getText()).toString().trim();
         if (type.isEmpty()) {
             typeExpense.setError("This is a required field");
             typeExpense.requestFocus();
@@ -201,7 +206,7 @@ public class AddExpenseActivity extends AppCompatActivity {
             showError(amount);
         } else if (dateExpense.isEmpty()) {
             showError(date);
-        } else if (Loation.isEmpty()) {
+        } else if (Location.isEmpty()) {
             showError(location);
         }
         else {
@@ -215,7 +220,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     private void addExpense() {
         MyDatabaseHelper myDB = new MyDatabaseHelper(this);
         Expense expense = new Expense();
-
+        // get data from input
         String removedFormat = (Objects.requireNonNull(amount.getText()).toString().trim()).replace(",","");
         expense.setTypeExpense(typeExpense.getText().toString().trim());
         expense.setAmount(Float.parseFloat(removedFormat));
@@ -229,7 +234,6 @@ public class AddExpenseActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getBaseContext(), "Added Successfully!", Toast.LENGTH_SHORT).show();
-
             Intent intent = new Intent(AddExpenseActivity.this, ExpenseActivity.class);
             intent.putExtra("selectedTrip", selectedTrip);
             startActivity(intent);

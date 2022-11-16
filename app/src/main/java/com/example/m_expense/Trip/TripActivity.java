@@ -49,41 +49,46 @@ public class TripActivity extends AppCompatActivity {
         trips = new ArrayList<>();
         // set status bar color
         setStatusColor();
+        // find all elements
         findAllElements();
+        // when click add button
         whenClickAdd();
+        // when click search trip
         searchTrip();
-        displayOrNot();
-        btnVoice.setOnClickListener(v -> {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Start Speaking");
-            try {
-                startActivityForResult(intent, 100);
-            } catch (Exception e) {
-                Toast.makeText(TripActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        // display all trips
+        displayTrip();
+        // when click voice button
+        whenClickVoice();
         // recycler view for trip list
         recyclerViewTrip();
     }
 
+    private void whenClickVoice() {
+        btnVoice.setOnClickListener(v -> {
+            // create intent to start speech recognizer
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Start Speaking");
+            startActivityForResult(intent, 100);
+        });
+    }
+
     private void recyclerViewTrip() {
-        tripAdapter = new TripAdapter(TripActivity.this, this, trips);
-        recyclerView.setAdapter(tripAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(TripActivity.this));
+        tripAdapter = new TripAdapter(TripActivity.this, this, trips); // create adapter
+        recyclerView.setAdapter(tripAdapter); // set adapter to recycler view
+        recyclerView.setLayoutManager(new LinearLayoutManager(TripActivity.this)); // set layout manager to position the items
     }
 
     private void searchTrip() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                tripAdapter.getFilter().filter(query);
+                tripAdapter.getFilter().filter(query); // filter recycler view when query submitted
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
-                tripAdapter.getFilter().filter(newText);
+                tripAdapter.getFilter().filter(newText); // filter recycler view when text is changed
                 return false;
             }
         });
@@ -122,16 +127,16 @@ public class TripActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            recreate();
+            recreate(); // refresh activity
         }
         if(requestCode == 100 && resultCode == RESULT_OK){
             assert data != null;
-            searchView.setQuery(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0), true);
+            searchView.setQuery(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0), true); // set query to search view when voice recognized
         }
     }
 
-    void displayOrNot() {
-        trips = myDB.getAll();
+    void displayTrip() {
+        trips = myDB.getAllTrip();
         if (trips.size() == 0) {
             empty_imageview.setVisibility(View.VISIBLE);
             no_data.setVisibility(View.VISIBLE);
@@ -151,7 +156,11 @@ public class TripActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.delete_all) {
-            confirmDialog();
+            if (trips.size() == 0) {
+                Toast.makeText(this, "No data to delete", Toast.LENGTH_SHORT).show();
+            } else {
+                confirmDialogDelete();
+            }
         }
         if(item.getItemId() == R.id.logout){
             confirmDialogLogout();
@@ -159,15 +168,13 @@ public class TripActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void confirmDialog() {
-
+    private void confirmDialogDelete() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
-        builder.setMessage("Are you sure you want to delete all Data?");
+        builder.setMessage("Are you sure to delete all trips?");
         builder.setPositiveButton("Yes", (dialogInterface, i) -> {
             MyDatabaseHelper myDB = new MyDatabaseHelper(TripActivity.this);
             myDB.deleteAllTrip();
-            //Refresh Activity
             Toast.makeText(TripActivity.this, "Deleted All Trip is Successfully !", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(TripActivity.this, TripActivity.class);
             startActivity(intent);

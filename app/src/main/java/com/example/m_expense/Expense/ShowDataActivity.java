@@ -5,8 +5,6 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -17,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +22,8 @@ import com.example.m_expense.R;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -43,12 +38,10 @@ public class ShowDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_data);
         // set status bar color
         setStatusColor();
-
         displayData = findViewById(R.id.dataDisplay);
         title = findViewById(R.id.titile);
 
-        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         try {
             fileF = ExpenseActivity.fullFileName;
             readFile();
@@ -84,6 +77,7 @@ public class ShowDataActivity extends AppCompatActivity {
         // finally change the color
         window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
     }
+
     public boolean onOptionsItemSelected(MenuItem item){
         if (item.getItemId() == android.R.id.home) {
             this.finish();
@@ -96,6 +90,7 @@ public class ShowDataActivity extends AppCompatActivity {
     }
 
     private void openFile() {
+        // Open the file using an external application
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()), "*/*");
         startActivity(intent);

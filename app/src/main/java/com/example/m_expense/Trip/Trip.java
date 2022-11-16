@@ -84,7 +84,6 @@ public class Trip implements Serializable {
         this.risk = risk;
         this.desc = desc;
     }
-
     public Trip() {
     }
 }

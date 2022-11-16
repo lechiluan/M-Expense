@@ -3,7 +3,6 @@ package com.example.m_expense.Trip;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -37,9 +36,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
     private List<Trip> trips;
     private final List<Trip> tripsOld;
 
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-
     TripAdapter(Activity activity, Context context, List<Trip> trips) {
         this.activity = activity;
         this.context = context;
@@ -51,16 +47,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.row_trip, parent, false);
-        return new MyViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(context); // get layout inflater
+        View view = inflater.inflate(R.layout.row_trip, parent, false); // inflate layout
+        return new MyViewHolder(view); // return view
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         Trip trip = trips.get(position);
-
         String name = trip.getName();
         String des = trip.getDes();
         String dateFrom = trip.getDateFrom();
@@ -86,7 +81,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
         holder.deleteTrip.setOnClickListener(view -> deleteTrip(trip.getId(), trip.getName()));
 
         holder.mainLayout.setOnClickListener(view -> {
-            //passing parameter values
             Intent intent = new Intent(context, ExpenseActivity.class);
             intent.putExtra("selectedTrip", trip);
             activity.startActivityForResult(intent, 1);
@@ -99,7 +93,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
         builder.setMessage("Are you sure you want to delete ?");
         builder.setPositiveButton("Yes", (dialogInterface, i) -> {
             MyDatabaseHelper myDB = new MyDatabaseHelper(context);
-            long result = myDB.delete(String.valueOf(id));
+            long result = myDB.deleteTrip(String.valueOf(id));
             if (result == -1) {
                 Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
             } else {

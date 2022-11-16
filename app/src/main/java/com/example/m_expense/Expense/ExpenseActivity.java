@@ -3,7 +3,6 @@ package com.example.m_expense.Expense;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -29,17 +28,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.m_expense.Database.MyDatabaseHelper;
 import com.example.m_expense.R;
 import com.example.m_expense.Trip.Trip;
-import com.example.m_expense.Trip.TripActivity;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,24 +62,22 @@ public class ExpenseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_expense);
         // set status bar color
         setStatusColor();
-
-        Intent intent = getIntent();
-        selectedTrip = (Trip) intent.getSerializableExtra("selectedTrip");
-        myDB = new MyDatabaseHelper(this);
-        expenses = new ArrayList<>();
-
+        // find all elements
         findAllElements();
-        displayOrNot();
+        // Display data from database
+        displayExpense();
         // recycler view for expense list
         recyclerViewTrip();
+        // when click add button
         whenClickAdd();
+        // display trip details
         getDetails();
     }
 
     private void recyclerViewTrip() {
-        expenseAdapter = new ExpenseAdapter(ExpenseActivity.this, this, expenses);
-        recyclerView.setAdapter(expenseAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseActivity.this));
+        expenseAdapter = new ExpenseAdapter(ExpenseActivity.this, this, expenses); // adapter for recycler view
+        recyclerView.setAdapter(expenseAdapter); // set adapter to recycler view
+        recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseActivity.this)); // set layout manager to recycler view
     }
 
     private void whenClickAdd() {
@@ -124,12 +116,13 @@ public class ExpenseActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void getDetails() {
+        // get data from database
         tripName.setText(selectedTrip.getName());
         destination.setText(selectedTrip.getDes());
         dateFrom.setText(selectedTrip.getDateFrom());
         dateTo.setText(selectedTrip.getDateTo());
         tripRisk.setText(selectedTrip.getRisk());
-
+        // get total expense
         Float totalExpenses = myDB.getTotalExpense(String.valueOf(selectedTrip.getId())); // get total expense
         total.setText(String.valueOf(totalExpenses));
     }
@@ -142,8 +135,12 @@ public class ExpenseActivity extends AppCompatActivity {
         }
     }
 
-    void displayOrNot() {
-        expenses = myDB.getAllExpense(selectedTrip.getId());
+    void displayExpense() {
+        Intent intent = getIntent();
+        selectedTrip = (Trip) intent.getSerializableExtra("selectedTrip"); // get selected trip
+        myDB = new MyDatabaseHelper(this);
+        expenses = new ArrayList<>();
+        expenses = myDB.getAllExpense(selectedTrip.getId()); // get all expense of selected trip
         if (expenses.size() == 0) {
             empty_imageview.setVisibility(View.VISIBLE);
             no_data.setVisibility(View.VISIBLE);
@@ -162,7 +159,11 @@ public class ExpenseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.delete_all) {
-            confirmDialog();
+            if (expenses.size() == 0) {
+                Toast.makeText(this, "No data to delete", Toast.LENGTH_SHORT).show();
+            } else {
+                confirmDialogDelete();
+            }
         }
         if(item.getItemId() == R.id.export_data){
             // check table expense is null
@@ -176,17 +177,13 @@ public class ExpenseActivity extends AppCompatActivity {
     }
 
     private void exportData(int id) {
-        // clear all data in file saved
-        savedList.clear();
-        // get all expense of selected trip
-        expenses = myDB.getAllExpense(id);
-
-        Gson gson = new Gson();
-        String json = gson.toJson(expenses);
-        savedList.add(json);
+        savedList.clear(); // clear list before add new data
+        expenses = myDB.getAllExpense(id); // get all expense of selected trip
+        Gson gson = new Gson(); // create gson object
+        String json = gson.toJson(expenses); // convert list to json
+        savedList.add(json); // add json to list
 
         if(savedList(fullFileName, savedList)){
-//            Toast.makeText(this, "Exported to " + getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + filename, Toast.LENGTH_LONG).show();
             Toast.makeText(this, "Exported to " + "Download/" + fullFileName, Toast.LENGTH_LONG).show();
             startActivity(new Intent(ExpenseActivity.this, ShowDataActivity.class));
         }
@@ -197,7 +194,7 @@ public class ExpenseActivity extends AppCompatActivity {
 
     private boolean savedList(String fullFileName, ArrayList<String> savedList) {
         try{
-            FileOutputStream fileOutputStream = new FileOutputStream(new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fullFileName));
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fullFileName)); // create file
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream); // create an output stream writer object
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter); // create a buffered writer object to write to the file
             bufferedWriter.write(String.valueOf(savedList)); // write the URL to the file
@@ -213,7 +210,7 @@ public class ExpenseActivity extends AppCompatActivity {
         }
     }
 
-    private void confirmDialog() {
+    private void confirmDialogDelete () {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
         builder.setMessage("Are you sure you want to delete all expenses?");
@@ -235,12 +232,11 @@ public class ExpenseActivity extends AppCompatActivity {
         builder.setTitle("Export All?");
         builder.setMessage("Do you want to export all expenses?");
         builder.setPositiveButton("Yes", (dialogInterface, i) -> {
-            // check fullFileName if exits will change filename variable
-            if (checkFile(fullFileName)) {
+            if (checkFile(fullFileName)) { // check file is exist
                 int count = 0; // count number of file exits
                 do {
                     count++;
-                    fullFileName = filename + "(" + count + ")" + fileExtension;
+                    fullFileName = filename + "(" + count + ")" + fileExtension; // create new file name
                 } while (checkFile(fullFileName));
             }
             exportData(selectedTrip.getId());

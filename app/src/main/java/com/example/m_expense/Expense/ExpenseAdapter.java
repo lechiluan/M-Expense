@@ -3,9 +3,7 @@ package com.example.m_expense.Expense;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.text.DecimalFormat;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +31,6 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
     private final Activity activity;
     private final List<Expense> expenses;
 
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-
     ExpenseAdapter(Activity activity, Context context, List<Expense> expenses) {
         this.activity = activity;
         this.context = context;
@@ -55,13 +50,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         Expense expense = expenses.get(position);
-
         int id = expense.getId();
         String type = expense.getTypeExpense();
         String amount = String.valueOf(expense.getAmount());
         String date = expense.getDate();
         String location = expense.getLocation();
-
 
         // set value to form
         holder.expenseType.setText(type);
@@ -70,19 +63,16 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
         holder.expenseLocation.setText(location);
 
         holder.editExpense.setOnClickListener(view -> {
-            //passing parameter values
             Intent intent = new Intent(context, UpdateExpenseActivity.class);
             intent.putExtra("selectedExpense", expense);
             activity.startActivityForResult(intent, 1);
         });
         holder.expenseLayout.setOnClickListener(view -> {
-            //passing parameter values
             Intent intent = new Intent(context, UpdateExpenseActivity.class);
             intent.putExtra("selectedExpense", expense);
             activity.startActivityForResult(intent, 1);
         });
-
-        holder.deleteExpense.setOnClickListener(v -> deleteExpense(expense, expense.getId()));
+        holder.deleteExpense.setOnClickListener(v -> deleteExpense(expense, expense.getId())); // delete expense
     }
 
     @Override
@@ -127,10 +117,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
                 context.startActivity(activity.getIntent());
                 activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
-
         });
         builder.setNegativeButton("No", (dialogInterface, i) -> {
-            // do nothing
         });
         builder.create().show();
     }
