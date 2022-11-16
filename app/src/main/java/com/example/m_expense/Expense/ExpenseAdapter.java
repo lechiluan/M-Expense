@@ -60,13 +60,14 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
         String type = expense.getTypeExpense();
         String amount = String.valueOf(expense.getAmount());
         String date = expense.getDate();
-        String note = expense.getNote();
+        String location = expense.getLocation();
+
 
         // set value to form
         holder.expenseType.setText(type);
         holder.expenseAmount.setText(amount);
         holder.expenseDate.setText(date);
-        holder.expenseNote.setText(note);
+        holder.expenseLocation.setText(location);
 
         holder.editExpense.setOnClickListener(view -> {
             //passing parameter values
@@ -91,7 +92,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView editExpense, deleteExpense;
-        TextView expenseType, expenseAmount, expenseDate, expenseNote;
+        TextView expenseType, expenseAmount, expenseDate, expenseLocation;
         LinearLayout expenseLayout;
 
         MyViewHolder(@NonNull View itemView) {
@@ -99,7 +100,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
             expenseType = itemView.findViewById(R.id.expenseType);
             expenseAmount = itemView.findViewById(R.id.expenseAmount);
             expenseDate = itemView.findViewById(R.id.expenseDate);
-            expenseNote = itemView.findViewById(R.id.expenseNote);
+            expenseLocation = itemView.findViewById(R.id.expenseLocation);
             editExpense = itemView.findViewById(R.id.editExpense);
             deleteExpense = itemView.findViewById(R.id.deleteExpense);
             expenseLayout = itemView.findViewById(R.id.expenseLayout);
