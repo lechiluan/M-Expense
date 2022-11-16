@@ -3,6 +3,7 @@ package com.example.m_expense.Trip;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.m_expense.Authentication.LoginActivity;
 import com.example.m_expense.Database.MyDatabaseHelper;
-import com.example.m_expense.Expense.ExpenseActivity;
 import com.example.m_expense.R;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class TripActivity extends AppCompatActivity {
 
     // UI elements
     RecyclerView recyclerView;
-    ImageView empty_imageview, btnAdd;
+    ImageView empty_imageview, btnAdd, btnVoice;
     TextView no_data;
     MyDatabaseHelper myDB;
     List<Trip> trips;
@@ -53,6 +53,16 @@ public class TripActivity extends AppCompatActivity {
         whenClickAdd();
         searchTrip();
         displayOrNot();
+        btnVoice.setOnClickListener(v -> {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Start Speaking");
+            try {
+                startActivityForResult(intent, 100);
+            } catch (Exception e) {
+                Toast.makeText(TripActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
         // recycler view for trip list
         recyclerViewTrip();
     }
@@ -93,6 +103,7 @@ public class TripActivity extends AppCompatActivity {
         no_data = findViewById(R.id.no_data);
         btnAdd = findViewById(R.id.add_button);
         searchView = findViewById(R.id.searchTrip);
+        btnVoice = findViewById(R.id.search_voice);
     }
 
     private void setStatusColor() {
@@ -112,6 +123,10 @@ public class TripActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             recreate();
+        }
+        if(requestCode == 100 && resultCode == RESULT_OK){
+            assert data != null;
+            searchView.setQuery(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0), true);
         }
     }
 

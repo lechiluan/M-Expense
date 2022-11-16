@@ -6,15 +6,33 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".Trip.TripActivity">
+
     <ImageView
         android:id="@+id/add_button"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/texttrip"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/add_plus_svgrepo_com" />
+
+    <ImageView
+        android:id="@+id/search_voice"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/searchTrip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/searchTrip"
+        app:layout_constraintTop_toTopOf="@+id/searchTrip"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/voice_svgrepo_com" />
 
     <TextView
         android:id="@+id/texttrip"
@@ -31,22 +49,20 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchTrip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="325dp"
+        android:layout_height="46dp"
         android:layout_margin="10dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/bg_item_trip"
         app:iconifiedByDefault="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/texttrip"
         app:queryHint="Search Here . . ." />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_trip"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_width="405dp"
+        android:layout_height="wrap_content"
         android:paddingVertical="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,13 +86,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:alpha="0.5"
-        android:text="Empty Trip !!!"
+        android:text="Empty Trip !"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/empty_imageview" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
