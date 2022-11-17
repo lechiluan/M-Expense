@@ -163,7 +163,7 @@ public class AddTripActivity extends AppCompatActivity {
         builder.setMessage("Trip Name: "+tripName +
                 "\nTrip Destination: " + location + "\nDate Start : " + dateS+
                 "\nDate End: " + dateE + "\nDescription: "+ description + "\nTrip Risk Assessment: " + risk);
-        builder.setPositiveButton("Yes", (dialogInterface, i) -> addTrip());
+        builder.setPositiveButton("Add", (dialogInterface, i) -> addTrip());
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
         });
         builder.create().show();
