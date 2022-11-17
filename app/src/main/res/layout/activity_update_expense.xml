@@ -80,7 +80,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutLocation"
-        android:layout_width="280dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/editext"
@@ -187,8 +187,9 @@
         android:id="@+id/button_location"
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/layoutLocation"
-        app:layout_constraintEnd_toEndOf="@+id/layoutExpenseAmount"
+        app:layout_constraintEnd_toEndOf="@+id/layoutLocation"
         app:layout_constraintTop_toTopOf="@+id/layoutLocation"
         app:srcCompat="@drawable/location_svgrepo_com" />
 

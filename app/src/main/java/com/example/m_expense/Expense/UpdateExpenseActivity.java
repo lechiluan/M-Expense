@@ -198,7 +198,8 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         } else if (date.isEmpty()) {
             showError(dateInput);
         } else if (Location.isEmpty()) {
-            showError(location);
+            Toast.makeText(this, "Please Enter Your Location", Toast.LENGTH_SHORT).show();
+            location.requestFocus();
         }
         else {
             typeExpense.setError(null);

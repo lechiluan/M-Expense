@@ -207,7 +207,8 @@ public class AddExpenseActivity extends AppCompatActivity {
         } else if (dateExpense.isEmpty()) {
             showError(date);
         } else if (Location.isEmpty()) {
-            showError(location);
+            Toast.makeText(this, "Please Enter Your Location", Toast.LENGTH_SHORT).show();
+            location.requestFocus();
         }
         else {
             typeExpense.setError(null);
