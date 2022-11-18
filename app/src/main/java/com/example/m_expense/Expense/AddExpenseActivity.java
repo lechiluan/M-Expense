@@ -2,15 +2,19 @@ package com.example.m_expense.Expense;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,17 +24,22 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
+import com.example.m_expense.Database.Expense;
 import com.example.m_expense.Database.MyDatabaseHelper;
 import com.example.m_expense.R;
-import com.example.m_expense.Trip.Trip;
+import com.example.m_expense.Database.Trip;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -45,14 +54,19 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     // UI elements
     Trip selectedTrip;
-    ImageView buttonLocation;
+    ImageView buttonLocation, buttonCamera, imagePreview, buttonDelete;
     AutoCompleteTextView typeExpense;
     String[] typeExpenseList;
     ArrayAdapter<String> adapter;
     TextInputEditText amount, note, location;
     EditText date;
     Button btnAdd;
+    TextView capturedImagePath;
     Calendar calendar;
+
+    private static final int PREMISSION_CODE = 1234;
+    private static final int CAPTURE_CODE = 1001;
+    Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +86,73 @@ public class AddExpenseActivity extends AppCompatActivity {
         whenClickAdd();
         // when click location button
         whenClickLocation();
+        // when click camera button
+        whenClickCamera();
+        // when click delete button
+        whenClickDelete();
+    }
+
+    private void whenClickDelete() {
+        buttonDelete.setOnClickListener(v -> {
+            capturedImagePath.setText("");
+            imagePreview.setImageResource(R.drawable.image_preview);
+            // delete image from gallery
+            if (imageUri != null) {
+                getContentResolver().delete(imageUri, null, null);
+            }
+        });
+    }
+
+    private void whenClickCamera() {
+        buttonCamera.setOnClickListener(v -> {
+            // check permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED ||
+                        checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    // permission not granted, request it
+                    String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    // show popup to request permission
+                    requestPermissions(permission, PREMISSION_CODE);
+                } else {
+                    // permission already granted
+                    openCamera();
+                }
+            } else {
+                // system os is less than marshmallow
+                openCamera();
+            }
+        });
+    }
+
+    private void openCamera() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(cameraIntent, CAPTURE_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CAPTURE_CODE){
+            String path = getPathFromURI(imageUri);
+            File file = new File(path);
+            if(file.exists()){
+                Glide.with(this).load(path).into(imagePreview);
+                capturedImagePath.setText(path);
+            }
+        }
+    }
+    public String getPathFromURI (Uri contentUri){
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
     private void whenClickAdd() {
@@ -80,7 +161,6 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     private void whenClickLocation() {
         buttonLocation.setOnClickListener(v -> {
-            // check permission for location
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
             }
@@ -192,6 +272,10 @@ public class AddExpenseActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.expenseBtnAdd);
         location = findViewById(R.id.txtlocation);
         buttonLocation = findViewById(R.id.button_location);
+        buttonCamera = findViewById(R.id.button_camera);
+        buttonDelete = findViewById(R.id.button_delete);
+        imagePreview = findViewById(R.id.imagePreview);
+        capturedImagePath = findViewById(R.id.capturedImagePath);
     }
 
     private void checkCredentials() {
@@ -229,6 +313,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         expense.setNote(Objects.requireNonNull(note.getText()).toString().trim());
         expense.setTripID(selectedTrip.getId());
         expense.setLocation(Objects.requireNonNull(location.getText()).toString().trim());
+        expense.setImageExpense(capturedImagePath.getText().toString().trim());
 
         long result = myDB.addExpense(expense);
         if (result == -1) {

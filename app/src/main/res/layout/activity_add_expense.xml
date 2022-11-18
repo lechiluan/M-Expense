@@ -70,15 +70,16 @@
             android:id="@+id/expenseAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
             android:background="#00000000"
+            android:inputType="numberDecimal"
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             android:textColor="#000000"
             app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"/>
+            app:boxStrokeWidthFocused="0dp" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutLocation"
         android:layout_width="match_parent"
@@ -98,14 +99,14 @@
             android:id="@+id/txtlocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
             android:background="#00000000"
+            android:inputType="text"
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             android:textColor="#000000"
             app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"/>
+            app:boxStrokeWidthFocused="0dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,9 +117,9 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/editext"
         android:hint="Date"
+        android:textColorHint="@color/black"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
-        android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutLocation"
@@ -146,10 +147,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutExpenseNote"
-        android:background="@drawable/editext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:background="@drawable/editext"
         android:hint="Note"
         android:textColorHint="@color/black"
         app:boxStrokeWidth="0dp"
@@ -163,22 +164,43 @@
             android:id="@+id/expenseNote"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textEmailAddress"
             android:background="#00000000"
+            android:inputType="textEmailAddress"
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             android:textColor="#000000"
             app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"/>
+            app:boxStrokeWidthFocused="0dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
+
+    <ImageView
+        android:id="@+id/button_camera"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutExpenseNote"
+        app:layout_constraintEnd_toEndOf="@+id/layoutExpenseNote"
+        app:layout_constraintTop_toTopOf="@+id/layoutExpenseNote"
+        app:srcCompat="@drawable/camera_svgrepo_com" />
+
+    <ImageView
+        android:id="@+id/button_delete"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imagePreview"
+        app:layout_constraintEnd_toEndOf="@+id/button_camera"
+        app:layout_constraintStart_toStartOf="@+id/button_camera"
+        app:layout_constraintTop_toBottomOf="@+id/layoutExpenseNote"
+        app:srcCompat="@drawable/delete_svg" />
 
     <Button
         android:id="@+id/expenseBtnAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/roundstyle"
         android:backgroundTint="@color/colorPrimaryDark"
         android:text="Add"
@@ -187,7 +209,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutExpenseNote" />
+        app:layout_constraintTop_toBottomOf="@+id/imagePreview" />
 
     <ImageView
         android:id="@+id/button_location"
@@ -198,5 +220,24 @@
         app:layout_constraintEnd_toEndOf="@+id/layoutLocation"
         app:layout_constraintTop_toTopOf="@+id/layoutLocation"
         app:srcCompat="@drawable/location_svgrepo_com" />
+
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="163dp"
+        android:layout_height="185dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutExpenseNote"
+        app:srcCompat="@drawable/image_preview" />
+
+    <TextView
+        android:id="@+id/capturedImagePath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="497dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,6 @@ package com.example.m_expense.Trip;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.m_expense.Database.MyDatabaseHelper;
+import com.example.m_expense.Database.Trip;
 import com.example.m_expense.R;
 import com.google.android.material.textfield.TextInputEditText;
 

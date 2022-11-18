@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.m_expense.Database.Trip;
 import com.example.m_expense.Expense.ExpenseActivity;
 import com.example.m_expense.Database.MyDatabaseHelper;
 import com.example.m_expense.R;

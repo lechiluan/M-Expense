@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.m_expense.Database.MyDatabaseHelper;
+import com.example.m_expense.Database.Trip;
 import com.example.m_expense.R;
 import com.google.android.material.textfield.TextInputEditText;
 

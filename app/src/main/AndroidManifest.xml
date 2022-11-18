@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.m_expense">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -25,7 +25,9 @@
             android:name=".Expense.ShowDataActivity"
             android:exported="true"
             android:label="Preview the JSON file"
-            android:parentActivityName=".Expense.ExpenseActivity">
+            android:parentActivityName=".Expense.ExpenseActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -33,7 +35,9 @@
         <activity
             android:name=".Authentication.LoginActivity"
             android:exported="false"
-            android:label="Login">
+            android:label="Login"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -42,30 +46,39 @@
             android:name=".Expense.UpdateExpenseActivity"
             android:exported="true"
             android:label="Update Expense"
-            android:parentActivityName=".Expense.ExpenseActivity" />
+            android:parentActivityName=".Expense.ExpenseActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".Expense.ExpenseActivity"
             android:exported="true"
             android:label="Trip Management"
-            android:parentActivityName=".Trip.TripActivity" />
+            android:parentActivityName=".Trip.TripActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".Expense.AddExpenseActivity"
             android:exported="true"
-            android:label="Add New Expense" />
+            android:label="Add New Expense"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".Trip.UpdateTripActivity"
             android:exported="true"
             android:label="Update Trip"
-            android:parentActivityName=".Trip.TripActivity" />
+            android:parentActivityName=".Trip.TripActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".Authentication.SplashActivity"
             android:exported="true"
             android:label="M-Expense"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -73,12 +86,15 @@
             android:name=".Trip.AddTripActivity"
             android:exported="true"
             android:label="Add New Trip"
-            android:parentActivityName=".Trip.TripActivity" />
+            android:parentActivityName=".Trip.TripActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".Trip.TripActivity"
             android:exported="true"
-            android:label="Trip Management" />
-
+            android:label="Trip Management"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

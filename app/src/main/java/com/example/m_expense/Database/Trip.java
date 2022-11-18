@@ -1,4 +1,4 @@
-package com.example.m_expense.Trip;
+package com.example.m_expense.Database;
 import java.io.Serializable;
 
 public class Trip implements Serializable {

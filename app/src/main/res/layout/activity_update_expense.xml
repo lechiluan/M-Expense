@@ -173,15 +173,16 @@
         android:id="@+id/expenseBtnUpdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/roundstyle"
         android:text="Update"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutExpenseNote" />
+        app:layout_constraintTop_toBottomOf="@+id/imagePreview" />
 
     <ImageView
         android:id="@+id/button_location"
@@ -192,6 +193,43 @@
         app:layout_constraintEnd_toEndOf="@+id/layoutLocation"
         app:layout_constraintTop_toTopOf="@+id/layoutLocation"
         app:srcCompat="@drawable/location_svgrepo_com" />
+    <ImageView
+        android:id="@+id/button_camera"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutExpenseNote"
+        app:layout_constraintEnd_toEndOf="@+id/layoutExpenseNote"
+        app:layout_constraintTop_toTopOf="@+id/layoutExpenseNote"
+        app:srcCompat="@drawable/camera_svgrepo_com" />
+    <ImageView
+        android:id="@+id/button_delete"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imagePreview"
+        app:layout_constraintEnd_toEndOf="@+id/button_camera"
+        app:layout_constraintStart_toStartOf="@+id/button_camera"
+        app:layout_constraintTop_toBottomOf="@+id/layoutExpenseNote"
+        app:srcCompat="@drawable/delete_svg" />
 
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="163dp"
+        android:layout_height="185dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutExpenseNote"
+        app:srcCompat="@drawable/image_preview" />
+
+    <TextView
+        android:id="@+id/capturedImagePath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="497dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

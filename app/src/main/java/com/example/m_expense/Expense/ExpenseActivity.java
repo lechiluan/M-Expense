@@ -25,9 +25,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.m_expense.Database.Expense;
 import com.example.m_expense.Database.MyDatabaseHelper;
 import com.example.m_expense.R;
-import com.example.m_expense.Trip.Trip;
+import com.example.m_expense.Database.Trip;
 import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
@@ -35,7 +36,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +54,7 @@ public class ExpenseActivity extends AppCompatActivity {
     TextView no_data;
 
     MyDatabaseHelper myDB; // database helper class
-    static String filename = "DataExpense";
+    static String filename;
     static String fileExtension = ".json";
     static String fullFileName = filename + fileExtension;
     ArrayList<String> savedList = new ArrayList<>(); // list of saved expense
@@ -232,11 +235,14 @@ public class ExpenseActivity extends AppCompatActivity {
         builder.setTitle("Export All?");
         builder.setMessage("Do you want to export all expenses?");
         builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            // timespan
+            Date date = new Date();
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
+            // get trip name
+            String tripName = selectedTrip.getName();
             if (checkFile(fullFileName)) { // check file is exist
-                int count = 0; // count number of file exits
                 do {
-                    count++;
-                    fullFileName = filename + "(" + count + ")" + fileExtension; // create new file name
+                    fullFileName = tripName + "_" + timeStamp + fileExtension; // create new file name
                 } while (checkFile(fullFileName));
             }
             exportData(selectedTrip.getId());

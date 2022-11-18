@@ -1,4 +1,4 @@
-package com.example.m_expense.Expense;
+package com.example.m_expense.Database;
 
 import java.io.Serializable;
 
@@ -10,6 +10,7 @@ public class Expense implements Serializable {
     private String Note;
     private int tripID;
     private String location;
+    private  String imageExpense;
 
     public String getLocation() {
         return location;
@@ -38,7 +39,6 @@ public class Expense implements Serializable {
     public void setTypeExpense(String type) {
         this.TypeExpense = type;
     }
-
 
     public String getDate() {
         return Date;
@@ -72,19 +72,31 @@ public class Expense implements Serializable {
         this.tripID = tripID;
     }
 
-    public Expense(int id, String type, String date, String note, float amount, int tripID) {
+    public Expense(int id, String type, String date, String note, float amount, int tripID, String location, String imageExpense) {
         this.idExpense = id;
         this.TypeExpense = type;
         this.Date = date;
         this.Note = note;
         this.Amount = amount;
         this.tripID = tripID;
+        this.location = location;
+        this.imageExpense = imageExpense;
     }
-    public Expense(String type, String date, String note, float amount, int tripID) {
+    public Expense(String type, String date, String note, float amount, int tripID, String location, String imageExpense) {
         this.TypeExpense = type;
         this.Date = date;
         this.Note = note;
         this.Amount = amount;
         this.tripID = tripID;
+        this.location = location;
+        this.imageExpense = imageExpense;
+    }
+
+    public String getImageExpense() {
+        return imageExpense;
+    }
+
+    public void setImageExpense(String imageExpense) {
+        this.imageExpense = imageExpense;
     }
 }

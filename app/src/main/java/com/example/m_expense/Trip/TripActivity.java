@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.m_expense.Authentication.LoginActivity;
 import com.example.m_expense.Database.MyDatabaseHelper;
+import com.example.m_expense.Database.Trip;
 import com.example.m_expense.R;
 
 import java.util.ArrayList;

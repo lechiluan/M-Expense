@@ -9,9 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import com.example.m_expense.Expense.Expense;
-import com.example.m_expense.Trip.Trip;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +36,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_NOTE = "expenseNote";
     private static final String COLUMN_LOCATION = "expenseLocation";
     public static final String COLUMN_TRIP_ID = "tripId";
+    private static final String COLUMN_IMAGE_EXPENSE = "imageExpense";
 
 
     // User table
@@ -114,8 +112,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_DATE_EXPENSE + " DATE, " +
                 COLUMN_NOTE + " TEXT, " +
                 COLUMN_LOCATION + " TEXT, " +
-                COLUMN_TRIP_ID + " INTEGER references " + TABLE_TRIP + "(" + COLUMN_ID + "), " +
-                COLUMN_USERNAME + " INTEGER references " + TABLE_USER + "(" + COLUMN_ID + "));";
+                COLUMN_IMAGE_EXPENSE + " TEXT, " +
+                COLUMN_TRIP_ID + " INTEGER references " + TABLE_TRIP + "(" + COLUMN_ID + "));";
         db.execSQL(query);
     }
 
@@ -146,7 +144,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DATE_EXPENSE, expense.getDate());
         values.put(COLUMN_NOTE, expense.getNote());
         values.put(COLUMN_TRIP_ID, expense.getTripID());
-
+        values.put(COLUMN_IMAGE_EXPENSE, expense.getImageExpense());
         // Inserting Row
         insertId = db.insert(TABLE_EXPENSE, null, values);
         db.close(); // Closing database connection
@@ -182,9 +180,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     public List<Expense> getAllExpense(Integer id) {
         final String query = String.format(
-                "SELECT b.%s, %s, %s, %s, %s, %s, %s FROM " +
+                "SELECT b.%s, %s, %s, %s, %s, %s, %s, %s FROM " +
                         "%s a, %s b WHERE a.%s = b.%s AND b.%s = %s ORDER BY b.%s DESC",
-                COLUMN_ID, COLUMN_TYPE, COLUMN_AMOUNT, COLUMN_DATE_EXPENSE, COLUMN_NOTE, COLUMN_TRIP_ID, COLUMN_LOCATION,TABLE_TRIP, TABLE_EXPENSE, COLUMN_ID, COLUMN_TRIP_ID, COLUMN_TRIP_ID, id, COLUMN_ID
+                COLUMN_ID, COLUMN_TYPE, COLUMN_AMOUNT, COLUMN_DATE_EXPENSE, COLUMN_NOTE, COLUMN_TRIP_ID, COLUMN_LOCATION,COLUMN_IMAGE_EXPENSE, TABLE_TRIP, TABLE_EXPENSE, COLUMN_ID, COLUMN_TRIP_ID, COLUMN_TRIP_ID, id, COLUMN_ID
         ); // select all query
         SQLiteDatabase db = this.getReadableDatabase(); // get readable database
         final List<Expense> list = new ArrayList<>(); // list to store all the trip objects
@@ -200,6 +198,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                     expense.setLocation(cursor.getString(6));
                     expense.setDate(cursor.getString(3));
                     expense.setNote(cursor.getString(4));
+                    expense.setImageExpense(cursor.getString(7));
                     // Adding object to list
                     list.add(expense);
                 } while (cursor.moveToNext());
@@ -251,7 +250,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DATE_EXPENSE, expense.getDate());
         values.put(COLUMN_LOCATION, expense.getLocation());
         values.put(COLUMN_NOTE, expense.getNote());
-
+        values.put(COLUMN_IMAGE_EXPENSE, expense.getImageExpense());
         return db.update(TABLE_EXPENSE, values, "id=?", new String[]{String.valueOf(expense.getId())}); // updating row
     }
 
