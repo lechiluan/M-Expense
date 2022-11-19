@@ -1,4 +1,5 @@
 package com.example.m_expense.Database;
+
 import java.io.Serializable;
 
 public class Trip implements Serializable {
@@ -84,6 +85,7 @@ public class Trip implements Serializable {
         this.risk = risk;
         this.desc = desc;
     }
+
     public Trip() {
     }
 }

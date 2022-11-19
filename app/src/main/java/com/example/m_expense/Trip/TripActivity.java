@@ -87,6 +87,7 @@ public class TripActivity extends AppCompatActivity {
                 tripAdapter.getFilter().filter(query); // filter recycler view when query submitted
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 tripAdapter.getFilter().filter(newText); // filter recycler view when text is changed
@@ -130,7 +131,7 @@ public class TripActivity extends AppCompatActivity {
         if (requestCode == 1) {
             recreate(); // refresh activity
         }
-        if(requestCode == 100 && resultCode == RESULT_OK){
+        if (requestCode == 100 && resultCode == RESULT_OK) {
             assert data != null;
             searchView.setQuery(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0), true); // set query to search view when voice recognized
         }
@@ -163,7 +164,7 @@ public class TripActivity extends AppCompatActivity {
                 confirmDialogDelete();
             }
         }
-        if(item.getItemId() == R.id.logout){
+        if (item.getItemId() == R.id.logout) {
             confirmDialogLogout();
         }
         return super.onOptionsItemSelected(item);
@@ -187,6 +188,7 @@ public class TripActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
+
     private void confirmDialogLogout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Logout?");
@@ -197,7 +199,8 @@ public class TripActivity extends AppCompatActivity {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
         });
-        builder.setNegativeButton("No", (dialogInterface, i) -> {});
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
+        });
         builder.create().show();
     }
 }

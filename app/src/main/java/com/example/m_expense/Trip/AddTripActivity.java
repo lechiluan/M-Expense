@@ -69,6 +69,7 @@ public class AddTripActivity extends AppCompatActivity {
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateCalendar();
             }
+
             private void updateCalendar() {
                 String format = "dd MMM yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
@@ -89,6 +90,7 @@ public class AddTripActivity extends AppCompatActivity {
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateCalendar();
             }
+
             private void updateCalendar() {
                 String format = "dd MMM yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
@@ -147,7 +149,7 @@ public class AddTripActivity extends AppCompatActivity {
         }
     }
 
-    public void confirmDataTrip(){
+    public void confirmDataTrip() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String tripName = Objects.requireNonNull(name.getText()).toString().trim();
@@ -160,9 +162,9 @@ public class AddTripActivity extends AppCompatActivity {
         risk = selectedRadioButton.getText().toString();
 
         builder.setTitle("Do you want to add this trip?");
-        builder.setMessage("Trip Name: "+tripName +
-                "\nTrip Destination: " + location + "\nDate Start : " + dateS+
-                "\nDate End: " + dateE + "\nDescription: "+ description + "\nTrip Risk Assessment: " + risk);
+        builder.setMessage("Trip Name: " + tripName +
+                "\nTrip Destination: " + location + "\nDate Start : " + dateS +
+                "\nDate End: " + dateE + "\nDescription: " + description + "\nTrip Risk Assessment: " + risk);
         builder.setPositiveButton("Add", (dialogInterface, i) -> addTrip());
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
         });

@@ -45,10 +45,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-// Reference
-//https://www.youtube.com/watch?v=rKnzzrdhb9g
-//https://stackoverflow.com/questions/18221614/how-i-can-get-the-city-name-of-my-current-position
-
 
 public class AddExpenseActivity extends AppCompatActivity {
 
@@ -138,16 +134,17 @@ public class AddExpenseActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CAPTURE_CODE){
+        if (requestCode == CAPTURE_CODE) {
             String path = getPathFromURI(imageUri);
             File file = new File(path);
-            if(file.exists()){
+            if (file.exists()) {
                 Glide.with(this).load(path).into(imagePreview);
                 capturedImagePath.setText(path);
             }
         }
     }
-    public String getPathFromURI (Uri contentUri){
+
+    public String getPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(contentUri, proj, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -161,17 +158,15 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     private void whenClickLocation() {
         buttonLocation.setOnClickListener(v -> {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
-            }
-            else {
+            } else {
                 LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                 Location Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 try {
                     String city = hereLocation(Location.getLatitude(), Location.getLongitude());
                     location.setText(city);
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(this, "Please turn on your location", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -183,22 +178,20 @@ public class AddExpenseActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // check permission for location
         if (requestCode == 1000) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
-                }else{
+                } else {
                     LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                     Location Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     try {
                         String city = hereLocation(Location.getLatitude(), Location.getLongitude()); // get city name
                         location.setText(city); // set location
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         Toast.makeText(this, "Please turn on your location", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
             }
         }
@@ -261,7 +254,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  // clear FLAG_TRANSLUCENT_STATUS flag
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS); // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         // finally change the color
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
     }
 
     private void findAllElements() {
@@ -293,8 +286,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         } else if (Location.isEmpty()) {
             Toast.makeText(this, "Please Enter Your Location", Toast.LENGTH_SHORT).show();
             location.requestFocus();
-        }
-        else {
+        } else {
             typeExpense.setError(null);
             amount.setError(null);
             date.setError(null);
@@ -306,7 +298,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         MyDatabaseHelper myDB = new MyDatabaseHelper(this);
         Expense expense = new Expense();
         // get data from input
-        String removedFormat = (Objects.requireNonNull(amount.getText()).toString().trim()).replace(",","");
+        String removedFormat = (Objects.requireNonNull(amount.getText()).toString().trim()).replace(",", "");
         expense.setTypeExpense(typeExpense.getText().toString().trim());
         expense.setAmount(Float.parseFloat(removedFormat));
         expense.setDate(date.getText().toString().trim());
@@ -323,7 +315,7 @@ public class AddExpenseActivity extends AppCompatActivity {
             Intent intent = new Intent(AddExpenseActivity.this, ExpenseActivity.class);
             intent.putExtra("selectedTrip", selectedTrip);
             startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         }
     }
 
@@ -333,7 +325,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             this.finish();
             return true;

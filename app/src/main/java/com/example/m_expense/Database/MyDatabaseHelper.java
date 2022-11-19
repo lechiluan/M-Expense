@@ -63,6 +63,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         onCreate(db);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         createTables(db);
@@ -117,7 +118,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public long addTrip (Trip trip) {
+    public long addTrip(Trip trip) {
         long insertId;
         SQLiteDatabase db = this.getWritableDatabase(); // get writable database
         ContentValues values = new ContentValues(); // create a new map of values, where column names are the keys
@@ -152,7 +153,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Trip> getAllTrip() {
-        final String query = "SELECT * FROM " + TABLE_TRIP +" ORDER BY " + COLUMN_ID + " DESC"; // select all query
+        final String query = "SELECT * FROM " + TABLE_TRIP + " ORDER BY " + COLUMN_ID + " DESC"; // select all query
         SQLiteDatabase db = this.getReadableDatabase(); // get readable database
         final List<Trip> list = new ArrayList<>();
         final Cursor cursor; // cursor to iterate through the result
@@ -182,7 +183,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         final String query = String.format(
                 "SELECT b.%s, %s, %s, %s, %s, %s, %s, %s FROM " +
                         "%s a, %s b WHERE a.%s = b.%s AND b.%s = %s ORDER BY b.%s DESC",
-                COLUMN_ID, COLUMN_TYPE, COLUMN_AMOUNT, COLUMN_DATE_EXPENSE, COLUMN_NOTE, COLUMN_TRIP_ID, COLUMN_LOCATION,COLUMN_IMAGE_EXPENSE, TABLE_TRIP, TABLE_EXPENSE, COLUMN_ID, COLUMN_TRIP_ID, COLUMN_TRIP_ID, id, COLUMN_ID
+                COLUMN_ID, COLUMN_TYPE, COLUMN_AMOUNT, COLUMN_DATE_EXPENSE, COLUMN_NOTE, COLUMN_TRIP_ID, COLUMN_LOCATION, COLUMN_IMAGE_EXPENSE, TABLE_TRIP, TABLE_EXPENSE, COLUMN_ID, COLUMN_TRIP_ID, COLUMN_TRIP_ID, id, COLUMN_ID
         ); // select all query
         SQLiteDatabase db = this.getReadableDatabase(); // get readable database
         final List<Expense> list = new ArrayList<>(); // list to store all the trip objects
@@ -209,7 +210,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public Float getTotalExpense(String id){
+    public Float getTotalExpense(String id) {
         float total = 0f; // total expense
         String query = "SELECT " + COLUMN_AMOUNT + " FROM " + TABLE_EXPENSE + " WHERE " + COLUMN_TRIP_ID + " = " + id; // select all query
 
@@ -229,7 +230,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return total;
     }
 
-    public long updateTrip (Trip trip) {
+    public long updateTrip(Trip trip) {
         SQLiteDatabase db = this.getWritableDatabase(); // get writable database
         ContentValues values = new ContentValues(); // create a new map of values, where column names are the keys
         values.put(COLUMN_NAME, trip.getName());
@@ -254,20 +255,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return db.update(TABLE_EXPENSE, values, "id=?", new String[]{String.valueOf(expense.getId())}); // updating row
     }
 
-    public long deleteTrip (String row_id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_TRIP, "id=?", new String[]{row_id});
+    public long deleteTrip(String row_id) {
+        SQLiteDatabase db = this.getWritableDatabase(); // get writable database
+        return db.delete(TABLE_TRIP, "id=?", new String[]{row_id}); // delete row
     }
 
     public long deleteExpense(String row_id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_EXPENSE, "id=?", new String[]{row_id});
+        SQLiteDatabase db = this.getWritableDatabase(); // get writable database
+        return db.delete(TABLE_EXPENSE, "id=?", new String[]{row_id}); // delete row
     }
 
     public void deleteAllTrip() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_TRIP);
-        db.execSQL("DELETE FROM " + TABLE_EXPENSE);
+        db.execSQL("DELETE FROM " + TABLE_TRIP); // delete all rows in a table
+        db.execSQL("DELETE FROM " + TABLE_EXPENSE); // delete all rows in a table
     }
 
     public void deleteAllExpense() {

@@ -10,7 +10,7 @@ public class Expense implements Serializable {
     private String Note;
     private int tripID;
     private String location;
-    private  String imageExpense;
+    private String imageExpense;
 
     public String getLocation() {
         return location;
@@ -20,10 +20,12 @@ public class Expense implements Serializable {
         this.location = location;
     }
 
+    // constructor
     public Expense() {
 
     }
 
+    // all get and set methods
     public int getId() {
         return idExpense;
     }
@@ -72,6 +74,7 @@ public class Expense implements Serializable {
         this.tripID = tripID;
     }
 
+
     public Expense(int id, String type, String date, String note, float amount, int tripID, String location, String imageExpense) {
         this.idExpense = id;
         this.TypeExpense = type;
@@ -82,6 +85,7 @@ public class Expense implements Serializable {
         this.location = location;
         this.imageExpense = imageExpense;
     }
+
     public Expense(String type, String date, String note, float amount, int tripID, String location, String imageExpense) {
         this.TypeExpense = type;
         this.Date = date;

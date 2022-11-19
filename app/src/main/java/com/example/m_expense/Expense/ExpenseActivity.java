@@ -101,7 +101,7 @@ public class ExpenseActivity extends AppCompatActivity {
         // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         // finally change the color
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
     }
 
     private void findAllElements() {
@@ -152,6 +152,7 @@ public class ExpenseActivity extends AppCompatActivity {
             no_data.setVisibility(View.GONE);
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -168,7 +169,7 @@ public class ExpenseActivity extends AppCompatActivity {
                 confirmDialogDelete();
             }
         }
-        if(item.getItemId() == R.id.export_data){
+        if (item.getItemId() == R.id.export_data) {
             // check table expense is null
             if (expenses.size() == 0) {
                 Toast.makeText(this, "No data to export !", Toast.LENGTH_SHORT).show();
@@ -186,17 +187,16 @@ public class ExpenseActivity extends AppCompatActivity {
         String json = gson.toJson(expenses); // convert list to json
         savedList.add(json); // add json to list
 
-        if(savedList(fullFileName, savedList)){
+        if (savedList(fullFileName, savedList)) {
             Toast.makeText(this, "Exported to " + "Download/" + fullFileName, Toast.LENGTH_LONG).show();
             startActivity(new Intent(ExpenseActivity.this, ShowDataActivity.class));
-        }
-        else{
+        } else {
             Toast.makeText(this, "Export is failed", Toast.LENGTH_SHORT).show();
         }
     }
 
     private boolean savedList(String fullFileName, ArrayList<String> savedList) {
-        try{
+        try {
             FileOutputStream fileOutputStream = new FileOutputStream(new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fullFileName)); // create file
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream); // create an output stream writer object
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter); // create a buffered writer object to write to the file
@@ -213,7 +213,7 @@ public class ExpenseActivity extends AppCompatActivity {
         }
     }
 
-    private void confirmDialogDelete () {
+    private void confirmDialogDelete() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
         builder.setMessage("Are you sure you want to delete all expenses?");
@@ -227,9 +227,11 @@ public class ExpenseActivity extends AppCompatActivity {
             startActivity(getIntent());
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
-        builder.setNegativeButton("No", (dialogInterface, i) -> {});
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
+        });
         builder.create().show();
     }
+
     private void confirmDialogExport() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Export All?");
@@ -247,7 +249,8 @@ public class ExpenseActivity extends AppCompatActivity {
             }
             exportData(selectedTrip.getId());
         });
-        builder.setNegativeButton("No", (dialogInterface, i) -> {});
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
+        });
         builder.create().show();
     }
 

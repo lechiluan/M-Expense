@@ -58,7 +58,8 @@ public class UpdateTripActivity extends AppCompatActivity {
     private void whenClickSave() {
         btnSave.setOnClickListener(view -> checkCredentials());
     }
-    private void checkCredentials(){
+
+    private void checkCredentials() {
         String tripName = Objects.requireNonNull(name.getText()).toString().trim();
         String location = Objects.requireNonNull(destination.getText()).toString().trim();
         String dateS = dateStart.getText().toString().trim();
@@ -107,7 +108,7 @@ public class UpdateTripActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getBaseContext(), "Update Successfully!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(UpdateTripActivity.this, TripActivity.class));
-            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
 
@@ -115,6 +116,7 @@ public class UpdateTripActivity extends AppCompatActivity {
         input.setError("This is a required field");
         input.requestFocus();
     }
+
     private void DatePickerEnd() {
         calendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener datePickerTo = new DatePickerDialog.OnDateSetListener() {

@@ -100,7 +100,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
             } else {
                 Toast.makeText(context, "Delete Successfully!", Toast.LENGTH_SHORT).show();
                 context.startActivity(new Intent(context, TripActivity.class));
-                activity.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         builder.setNegativeButton("No", (dialogInterface, i) -> {
@@ -117,7 +117,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView editTrip, deleteTrip;
-        TextView tripName, tripDestination, tripDate,totalExpense;
+        TextView tripName, tripDestination, tripDate, totalExpense;
         LinearLayout mainLayout;
 
         MyViewHolder(@NonNull View itemView) {
@@ -149,11 +149,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> 
                     for (Trip trip : tripsOld) {
                         if (trip.getName().toLowerCase().contains(strSearch.toLowerCase())) {
                             list.add(trip);
-                        }
-                        else if (trip.getDateFrom().toLowerCase().contains(strSearch.toLowerCase())) {
-                            list.add(trip);
-                        }
-                        else if (trip.getDes().toLowerCase().contains(strSearch.toLowerCase())) {
+                        } else if (trip.getDes().toLowerCase().contains(strSearch.toLowerCase())) {
                             list.add(trip);
                         }
                     }

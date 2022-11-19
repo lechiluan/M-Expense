@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         // finally change the color
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
     }
+
     private void checkInput() {
         db = new MyDatabaseHelper(this); // create database
         String Username = username.getText().toString().trim(); // get username from input field and trim it
@@ -75,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "Username or Password is incorrect !", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void showError(EditText input) {
         input.setError("This field cannot be empty");
         input.requestFocus();

@@ -23,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
     ImageView imageLogo;
     Button btnStart;
     TextView textView, slogan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +33,7 @@ public class SplashActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
         // find all elements
         findAllElements();
+        // set animation
         setAnimation();
         btnStart.setOnClickListener(v -> {
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));

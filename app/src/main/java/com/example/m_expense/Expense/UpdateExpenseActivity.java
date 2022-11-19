@@ -96,6 +96,7 @@ public class UpdateExpenseActivity extends AppCompatActivity {
     private void whenClickSave() {
         btnSave.setOnClickListener(view -> checkCredentials());
     }
+
     private void whenClickDelete() {
         buttonDelete.setOnClickListener(v -> {
             capturedImagePath.setText("");
@@ -142,16 +143,17 @@ public class UpdateExpenseActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CAPTURE_CODE){
+        if (requestCode == CAPTURE_CODE) {
             String path = getPathFromURI(imageUri);
             File file = new File(path);
-            if(file.exists()){
+            if (file.exists()) {
                 Glide.with(this).load(path).into(imagePreview);
                 capturedImagePath.setText(path);
             }
         }
     }
-    public String getPathFromURI (Uri contentUri){
+
+    public String getPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(contentUri, proj, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -162,17 +164,15 @@ public class UpdateExpenseActivity extends AppCompatActivity {
     private void whenClickLocation() {
         buttonLocation.setOnClickListener(v -> {
             // check permission for location
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
-            }
-            else {
+            } else {
                 LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                 Location Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 try {
                     String city = hereLocation(Location.getLatitude(), Location.getLongitude());
                     location.setText(city);
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(this, "Please turn on your location", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -223,6 +223,7 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         }
         return cityName;
     }
+
     private void dropDownTypeExpense() {
         typeExpenseList = getResources().getStringArray(R.array.typeExpense);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, typeExpenseList);
@@ -271,7 +272,7 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         // finally change the color
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.black));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
     }
 
     private void checkCredentials() {
@@ -289,8 +290,7 @@ public class UpdateExpenseActivity extends AppCompatActivity {
         } else if (Location.isEmpty()) {
             Toast.makeText(this, "Please Enter Your Location", Toast.LENGTH_SHORT).show();
             location.requestFocus();
-        }
-        else {
+        } else {
             typeExpense.setError(null);
             amount.setError(null);
             dateInput.setError(null);
