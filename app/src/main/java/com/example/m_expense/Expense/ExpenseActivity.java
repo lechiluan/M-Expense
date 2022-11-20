@@ -242,20 +242,15 @@ public class ExpenseActivity extends AppCompatActivity {
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
             // get trip name
             String tripName = selectedTrip.getName();
-            if (checkFile(fullFileName)) { // check file is exist
-                do {
-                    fullFileName = tripName + "_" + timeStamp + fileExtension; // create new file name
-                } while (checkFile(fullFileName));
-            }
+            fullFileName = tripName + "_" + timeStamp + fileExtension; // create new file nameName));
+            finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            startActivity(getIntent());
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             exportData(selectedTrip.getId());
         });
         builder.setNegativeButton("No", (dialogInterface, i) -> {
         });
         builder.create().show();
-    }
-
-    private boolean checkFile(String fullFileName) {
-        File file = new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fullFileName);
-        return file.exists();
     }
 }

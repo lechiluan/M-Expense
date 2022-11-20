@@ -23,6 +23,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -74,7 +75,7 @@ public class UpdateTripActivity extends AppCompatActivity {
             showError(destination);
         } else if (dateS.isEmpty()) {
             showError(dateStart);
-        } else if (dateS.compareTo(dateE) > 0) {
+        } else if (new Date(dateS).after(new Date(dateE))) {
             showError(dateEnd);
             Toast.makeText(this, "Date End must be after Date Start! ", Toast.LENGTH_SHORT).show();
         } else if (dateE.isEmpty()) {
