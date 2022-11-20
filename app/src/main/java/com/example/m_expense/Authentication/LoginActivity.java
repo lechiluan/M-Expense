@@ -67,7 +67,10 @@ public class LoginActivity extends AppCompatActivity {
         }
         Boolean checkData = db.checkUserPass(Username, Password); // check if username and password are correct
         if (checkData) {
-            Toast.makeText(LoginActivity.this, "Log in is successfully !", Toast.LENGTH_SHORT).show(); // if username and password are correct, show message
+            Toast.makeText(LoginActivity.this, "" +
+                    "" +
+                    "" +
+                    "Log in is successfully !", Toast.LENGTH_SHORT).show(); // if username and password are correct, show message
             currentUser = Username; // set current user to display in TripActivity
             Intent intent = new Intent(getApplicationContext(), TripActivity.class); // create intent to go to TripActivity
             startActivity(intent);

@@ -244,8 +244,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public long updateExpense(Expense expense) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        SQLiteDatabase db = this.getWritableDatabase(); // get writable database
+        ContentValues values = new ContentValues(); // create a new map of values, where column names are the keys
         values.put(COLUMN_TYPE, expense.getTypeExpense());
         values.put(COLUMN_AMOUNT, expense.getAmount());
         values.put(COLUMN_DATE_EXPENSE, expense.getDate());
