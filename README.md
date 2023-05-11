@@ -1,17 +1,18 @@
 # M-Expense
 M-Expense is a mobile application will allow employees to record trip and expense details that they can use to record details of their expenses and then upload them to their employer's server. The application will be implemented for the Android operating system and developed in the Java programming language.
 
-Coding and Design by My Group.
+Link Demonstration of M-Expense application: https://www.youtube.com/watch?v=aAZKFP7qD0Y
 
+Coding and Design by My Group.
 1. Le Chi Luan
-StudentID: 001272780
-GitHub: https://github.com/lechiluan
-Email: ll4825k@gre.ac.uk
+- StudentID: 001272780
+- GitHub: https://github.com/lechiluan
+- Email: ll4825k@gre.ac.uk
 
 2. Le Trung Kien
-StudentID: 001272792
-GitHub: https://github.com/kienltgcc19138
-Email: lk5203p@gre.ac.uk 
+- StudentID: 001272792
+- GitHub: https://github.com/kienltgcc19138
+- Email: lk5203p@gre.ac.uk 
 
 Requirement to run the source code.
 1. You need to download Java SE Development Kit here we use (JDK version 1.8). Download Link: https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html
